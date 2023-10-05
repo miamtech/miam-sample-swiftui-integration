@@ -12,6 +12,7 @@
 "tab_basket" = "My Basket";
 "tab_catalog" = "Catalog";
 "tab_favorites" = "Favorites";
+"tab_meal_planner" = "Meal Planner";
 // auth
 "sign_in_page" = "Sign In";
 "must_sign_in" = "You must sign in";

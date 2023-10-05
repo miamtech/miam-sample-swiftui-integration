@@ -22,9 +22,9 @@ enum CatalogNavigationState  {
 }
 
 struct CatalogTabView: View {
-    //    binding bool to launch Acc settings determined by TabbedView
+    // binding bool to launch Acc settings determined by TabbedView
     @Binding var launchAccount: Bool
-    //    decides if button is shown
+    // decides if button is shown
     var showAccount: Bool
     @SwiftUI.State private var selectedRecipe: String = ""
     
@@ -39,50 +39,52 @@ struct CatalogTabView: View {
         }
         var body: some View {
             view
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: Button("Back") {
+                .navigationBarItems(leading: Button(action: {
                     navigationStack.removeLast()
-                })
+                }) {
+                    Text("Back")
+                }.foregroundColor(Color.white))
+                .navigationBarTitleDisplayMode(.inline)
                 .transition(.moveAndFade)
         }
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack {
                 switch navigationStack.last {
-                case .catalog:
-                    CatalogView(
-                        navigationStack: $navigationStack,
-                        selectedRecipe: $selectedRecipe)
-                    .navigationBarBackButtonHidden(true)
-                    .transition(.moveAndFade)
                 case .mealPlanner:
-                    PageWithHeader(
-                        navigationStack: $navigationStack,
-                        view: MealPlanner(parentNavigationStack: $navigationStack))
+                    MealPlanner(parentNavigationStack: $navigationStack)
+                        .transition(.moveAndFade)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle("Meal Planner")
                 case .preferences:
                     PageWithHeader(
                         navigationStack: $navigationStack,
                         view: PreferencesView(navigationStack: $navigationStack))
+                    .navigationTitle("Preferences")
                 case .preferencesSearch:
                     PageWithHeader(
                         navigationStack: $navigationStack,
                         view: PreferencesSearchView(navigationStack: $navigationStack))
+                    .navigationTitle("Preferences Search")
                 case .catalogSearch:
                     PageWithHeader(
                         navigationStack: $navigationStack,
                         view: CatalogSearchView(navigationStack: $navigationStack))
+                    .navigationTitle("Search")
                 case .filters:
                     PageWithHeader(
                         navigationStack: $navigationStack,
                         view: FiltersView(navigationStack: $navigationStack))
+                    .navigationTitle("Filters")
                 case .catalogResults:
                     PageWithHeader(
                         navigationStack: $navigationStack,
                         view: CatalogResultsView(
                             navigationStack: $navigationStack,
                             selectedRecipe: $selectedRecipe))
+                    .navigationTitle("Results")
                 case .recipeDetails:
                     PageWithHeader(
                         navigationStack: $navigationStack,
@@ -92,18 +94,20 @@ struct CatalogTabView: View {
                                 return
                             }},
                             selectedRecipe: $selectedRecipe))
+                    .navigationTitle("Recipe Details")
                 default:
                     CatalogView(
                         navigationStack: $navigationStack,
                         selectedRecipe: $selectedRecipe)
-                    .navigationBarBackButtonHidden(true)
+                    .navigationTitle(LocalizedStringKey("tab_catalog"))
+                    .navigationBarTitleDisplayMode(.inline)
                     .transition(.moveAndFade)
                 }
             }
-            .navigationTitle(LocalizedStringKey("tab_catalog")).navigationBarTitleDisplayMode(.inline)
-            .toolbar(content: {
-                if showAccount { ShowAccountDependingOnStore(launchAccountSetting: $launchAccount)}
-            })
+//            .navigationTitle(LocalizedStringKey("tab_catalog")).navigationBarTitleDisplayMode(.inline)
+//            .toolbar(content: {
+//                if showAccount { ShowAccountDependingOnStore(launchAccountSetting: $launchAccount)}
+//            })
         }
     }
 }

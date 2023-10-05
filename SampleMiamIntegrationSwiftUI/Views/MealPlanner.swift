@@ -35,16 +35,18 @@ struct MealPlanner: View {
         }
         var body: some View {
             view
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: Button("Back") {
+                .navigationBarItems(leading: Button(action: {
                     navigationStack.removeLast()
-                })
+                }) {
+                    Text("Back")
+                }.foregroundColor(Color.white))
+                .navigationBarTitleDisplayMode(.inline)
                 .transition(.moveAndFade)
         }
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack {
                 switch navigationStack.last {
                 case .mealPlanner:
@@ -83,12 +85,15 @@ struct MealPlanner: View {
                         navigationStack: $navigationStack,
                         view: MealPlannerRecapPageView())
                 default:
-                    MealPlannerFormPage(navigationStack: $navigationStack, recipes: $recipes)
-                        .navigationBarBackButtonHidden(true)
-                        .navigationBarItems(leading: Button("Back") {
-                            parentNavigationStack.removeLast()
-                        })
-                        .transition(.moveAndFade)
+                    MealPlannerFormPage(
+                        navigationStack: $navigationStack,
+                        recipes: $recipes)
+                    .navigationBarItems(leading: Button(action: {
+                        parentNavigationStack.removeLast()
+                    }) {
+                        Text("Back")
+                    }.foregroundColor(Color.white))
+                    .transition(.moveAndFade)
                 }
             }
         }
