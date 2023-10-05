@@ -8,6 +8,7 @@
 
 import SwiftUI
 import MiamIOSFramework
+import miamCore
 
 enum MealPlannerNavigationState {
     case form
@@ -18,13 +19,15 @@ enum MealPlannerNavigationState {
     case itemSelector
     case recapRecipes
     case continueShopping
+    case sponsorDetails
 }
 
 struct MealPlanner: View {
     @Binding var parentNavigationStack: [CatalogNavigationState]
     @SwiftUI.State private var recipes: [String]?
-    @State private var navigationStack: [MealPlannerNavigationState] = []
+    @SwiftUI.State private var navigationStack: [MealPlannerNavigationState] = []
     @SwiftUI.State private var selectedRecipe: String = ""
+    @SwiftUI.State private var selectedSponsor: Sponsor? = nil
     
     struct PageWithHeader<Content: View>: View {
         private let view: Content
@@ -62,12 +65,21 @@ struct MealPlanner: View {
                 case .recipeDetails:
                     PageWithHeader(
                         navigationStack: $navigationStack,
-                        view: RecipeDetailsPageView(
+                        view: RecipeDetailsView(
                             popRecipeDetails: { withAnimation {
                                 navigationStack.removeLast()
                                 return
                             }},
-                            selectedRecipe: $selectedRecipe))
+                            launchSponsorDetails: { withAnimation {
+                                navigationStack.append(.sponsorDetails)
+                            }},
+                            selectedRecipe: $selectedRecipe,
+                            selectedSponsor: $selectedSponsor))
+                case .sponsorDetails:
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: SponsorDetailView(
+                            selectedSponsor: $selectedSponsor))
                 case .basketPreview:
                     PageWithHeader(
                         navigationStack: $navigationStack,

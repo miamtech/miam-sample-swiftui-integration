@@ -54,6 +54,7 @@
 		2670B9FC2ACEC41500A188AC /* CatalogResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9FB2ACEC41500A188AC /* CatalogResultsView.swift */; };
 		2670B9FE2ACEC5EF00A188AC /* CatalogSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9FD2ACEC5EF00A188AC /* CatalogSearchView.swift */; };
 		2670BA002ACEE68800A188AC /* AnyTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9FF2ACEE68800A188AC /* AnyTransition.swift */; };
+		2670BA022ACEFEFD00A188AC /* SponsorDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670BA012ACEFEFD00A188AC /* SponsorDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +127,7 @@
 		2670B9FB2ACEC41500A188AC /* CatalogResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogResultsView.swift; sourceTree = "<group>"; };
 		2670B9FD2ACEC5EF00A188AC /* CatalogSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogSearchView.swift; sourceTree = "<group>"; };
 		2670B9FF2ACEE68800A188AC /* AnyTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTransition.swift; sourceTree = "<group>"; };
+		2670BA012ACEFEFD00A188AC /* SponsorDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SponsorDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +277,7 @@
 			children = (
 				2670B9792ACEB31300A188AC /* ItemSelectorPageView.swift */,
 				2670B97A2ACEB31300A188AC /* RecipeDetailsPageView.swift */,
+				2670BA012ACEFEFD00A188AC /* SponsorDetailView.swift */,
 			);
 			path = GeneralPurposePages;
 			sourceTree = "<group>";
@@ -473,6 +476,7 @@
 				2670B9902ACEB35200A188AC /* SampleMiamIntegrationSwiftUI.swift in Sources */,
 				2670B9922ACEB35200A188AC /* MiamManager.swift in Sources */,
 				2670B9942ACEB35200A188AC /* Groceries.swift in Sources */,
+				2670BA022ACEFEFD00A188AC /* SponsorDetailView.swift in Sources */,
 				2670B9952ACEB35200A188AC /* UserInformation.swift in Sources */,
 				2670B9FA2ACEC34C00A188AC /* FiltersView.swift in Sources */,
 				2670BA002ACEE68800A188AC /* AnyTransition.swift in Sources */,

@@ -8,20 +8,32 @@
 
 import SwiftUI
 import MiamIOSFramework
+import miamCore
 
-struct RecipeDetailsPageView: View {
-    var popRecipeDetails: () -> Void
-    @Binding var selectedRecipe: String
-    var body: some View {
-        // TODO: on 3.13 -> move this to MiamN templating
-        Text("recipe details")
+class RecipeDetailsParams: RecipeDetailsViewParameters {
+    public var closeRecipeDetails: () -> Void
+    public var sponsorDetailsTapped: (Sponsor) -> Void
+    public init(
+        closeRecipeDetails: @escaping () -> Void,
+        sponsorDetailsTapped: @escaping (Sponsor) -> Void
+    ) {
+        self.closeRecipeDetails = closeRecipeDetails
+        self.sponsorDetailsTapped = sponsorDetailsTapped
     }
 }
 
-struct RecipeDetailsPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecipeDetailsPageView(
-            popRecipeDetails: {},
-            selectedRecipe: .constant("id"))
+struct RecipeDetailsView: View {
+    var popRecipeDetails: () -> Void
+    var launchSponsorDetails: () -> Void
+    @Binding var selectedRecipe: String
+    @Binding var selectedSponsor: Sponsor?
+    
+    var body: some View {
+        RecipeDetails(params: RecipeDetailsParams(
+            closeRecipeDetails: popRecipeDetails,
+            sponsorDetailsTapped: { sponsor in
+                selectedSponsor = sponsor
+                launchSponsorDetails()
+            }), recipeId: selectedRecipe)
     }
 }

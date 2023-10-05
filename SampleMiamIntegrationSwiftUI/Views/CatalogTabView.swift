@@ -9,6 +9,7 @@
 import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
+import miamCore
 
 enum CatalogNavigationState  {
     case catalog
@@ -19,6 +20,7 @@ enum CatalogNavigationState  {
     case filters
     case catalogResults
     case recipeDetails
+    case sponsorDetails
 }
 
 struct CatalogTabView: View {
@@ -27,8 +29,9 @@ struct CatalogTabView: View {
     // decides if button is shown
     var showAccount: Bool
     @SwiftUI.State private var selectedRecipe: String = ""
+    @SwiftUI.State private var selectedSponsor: Sponsor? = nil
     
-    @State private var navigationStack: [CatalogNavigationState] = []
+    @SwiftUI.State private var navigationStack: [CatalogNavigationState] = []
     
     struct PageWithHeader<Content: View>: View {
         private let view: Content
@@ -88,12 +91,22 @@ struct CatalogTabView: View {
                 case .recipeDetails:
                     PageWithHeader(
                         navigationStack: $navigationStack,
-                        view: RecipeDetailsPageView(
+                        view: RecipeDetailsView(
                             popRecipeDetails: { withAnimation {
                                 navigationStack.removeLast()
                                 return
                             }},
-                            selectedRecipe: $selectedRecipe))
+                            launchSponsorDetails: { withAnimation {
+                                navigationStack.append(.sponsorDetails)
+                            }},
+                            selectedRecipe: $selectedRecipe,
+                            selectedSponsor: $selectedSponsor))
+                    .navigationTitle("Recipe Details")
+                case .sponsorDetails:
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: SponsorDetailView(
+                            selectedSponsor: $selectedSponsor))
                     .navigationTitle("Recipe Details")
                 default:
                     CatalogView(
@@ -104,10 +117,6 @@ struct CatalogTabView: View {
                     .transition(.moveAndFade)
                 }
             }
-//            .navigationTitle(LocalizedStringKey("tab_catalog")).navigationBarTitleDisplayMode(.inline)
-//            .toolbar(content: {
-//                if showAccount { ShowAccountDependingOnStore(launchAccountSetting: $launchAccount)}
-//            })
         }
     }
 }
