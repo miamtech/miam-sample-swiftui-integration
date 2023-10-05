@@ -18,7 +18,6 @@ enum MealPlannerNavigationState {
     case itemSelector
     case recapRecipes
     case continueShopping
-    // ... add other states as needed
 }
 
 struct MealPlanner: View {

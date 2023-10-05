@@ -10,45 +10,16 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
-/// This sets the Templates for the CatalogPage Overview
-public struct MiamNeutralCatalogViewParams: CatalogViewParameters {
-    public var filtersTapped: () -> Void
-    public var searchTapped: () -> Void
-    public var favoritesTapped: () -> Void
-    public var preferencesTapped: () -> Void
-    public var launchMealPlanner: (() -> Void)?
-    public var myMealsButtonTapped: () -> Void
-    public init(
-        filtersTapped: @escaping () -> Void,
-        searchTapped: @escaping () -> Void,
-        favoritesTapped: @escaping () -> Void,
-        preferencesTapped: @escaping () -> Void,
-        launchMealPlanner: (() -> Void)?,
-        myMealsButtonTapped: @escaping () -> Void
-    ) {
-        self.filtersTapped = filtersTapped
-        self.searchTapped = searchTapped
-        self.favoritesTapped = favoritesTapped
-        self.preferencesTapped = preferencesTapped
-        self.launchMealPlanner = launchMealPlanner
-        self.myMealsButtonTapped = myMealsButtonTapped
-    }
-    
-    // if you WANT the meal Planner:
-    public var mealPlannerCTA = MiamNeutralMealPlannerCallToAction() // your CTA
-}
 
-/// This sets the Templates for the CatalogRecipesList Overview
-public class MiamNeutralCatalogPackageRowParams: CatalogPackageRowParameters {
-    public var showRecipes: () -> Void
-    public var onRecipeTapped: (String) -> Void
-    public init(
-        showRecipes: @escaping () -> Void,
-        onRecipeTapped: @escaping (String) -> Void
-    ) {
-        self.showRecipes = showRecipes
-        self.onRecipeTapped = onRecipeTapped
-    }
+enum CatalogNavigationState {
+    case catalog
+    case mealPlanner
+    case preferences
+    case preferencesSearch
+    case catalogSearch
+    case filters
+    case catalogResults
+    case recipeDetails
 }
 
 struct CatalogTabView: View {
@@ -56,52 +27,99 @@ struct CatalogTabView: View {
     @Binding var launchAccount: Bool
     //    decides if button is shown
     var showAccount: Bool
-    // for setting mealPlanner
-    @SwiftUI.State private var showMealPlanner: Bool = false
-    var MiamRecipesListViewConfig = RecipesListViewConfig(
-        recipesListColumns: 2,
-        recipesListSpacing: 8,
-        recipeCardDimensions: CGSize(width: 300, height: 380),
-        recipeCardFillMaxWidth: true
-    )
+    @SwiftUI.State private var selectedRecipe: String = ""
     
+    @State private var navigationStack: [CatalogNavigationState] = []
+
     var body: some View {
         NavigationView {
-            ZStack(alignment: .bottom) {
-                NavigationLink(
-                    destination: MealPlanner(showMealPlanner: $showMealPlanner),
-                    isActive: $showMealPlanner) { EmptyView().onAppear {
-                        print("MealPlanner: on catalog")
-                     } }
-            CatalogViewTemplate(
-                params: MiamNeutralCatalogViewParams(
-                    filtersTapped: {
-                        print("filtersTapped")
-                    },
-                    searchTapped: {
-                        print("searchTapped")
-                    },
-                    favoritesTapped: {
-                        print("favoritesTapped")
-                    },
-                    preferencesTapped: {
-                        print("preferencesTapped")
-                    },
-                    launchMealPlanner: {
-                        showMealPlanner = true
-                    },
-                    myMealsButtonTapped: {
-                        print("myMealsButtonTapped")
-                    }),
-                catalogPackageRowParams: MiamNeutralCatalogPackageRowParams(
-                    showRecipes: {
-                        print("showRecipes")
-                    },
-                    onRecipeTapped: { recipeId in
-                        print("onRecipeTapped")
-                    }),
-                config: MiamRecipesListViewConfig)
-            
+            VStack {
+                switch navigationStack.last {
+                case .catalog:
+                    NavigationLink(
+                        destination:
+                            CatalogView(
+                                navigationStack: $navigationStack)
+                            .navigationBarBackButtonHidden(true)
+                        ) {
+                        EmptyView()
+                    }
+//                case .mealPlanner:
+//                    NavigationLink(
+//                        destination:
+//                            MealPlanner(navigationStack: $navigationStack)
+//                            .navigationBarBackButtonHidden(true)
+//                            .navigationBarItems(leading: Button("Back") {
+//                                navigationStack.removeLast()
+//                        }), isActive: .constant(true)) {
+//                        EmptyView()
+//                    }
+                case .preferences:
+                    NavigationLink(
+                        destination: PreferencesView(navigationStack: $navigationStack)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarItems(leading: Button("Back") {
+                                navigationStack.removeLast()
+                        }), isActive: .constant(true)) {
+                        EmptyView()
+                    }
+                case .preferencesSearch:
+                    NavigationLink(
+                        destination: PreferencesSearchView(navigationStack: $navigationStack)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarItems(leading: Button("Back") {
+                                navigationStack.removeLast()
+                        }), isActive: .constant(true)) {
+                        EmptyView()
+                    }
+                case .catalogSearch:
+                    NavigationLink(
+                        destination:
+                            CatalogSearchView(navigationStack: $navigationStack)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarItems(leading: Button("Back") {
+                                navigationStack.removeLast()
+                        }), isActive: .constant(true)) {
+                        EmptyView()
+                    }
+                case .filters:
+                    NavigationLink(
+                        destination:
+                            FiltersView(navigationStack: $navigationStack)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarItems(leading: Button("Back") {
+                                navigationStack.removeLast()
+                        }), isActive: .constant(true)) {
+                        EmptyView()
+                    }
+                case .catalogResults:
+                    NavigationLink(
+                        destination:
+                            CatalogResultsView(navigationStack: $navigationStack)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarItems(leading: Button("Back") {
+                                navigationStack.removeLast()
+                        }), isActive: .constant(true)) {
+                        EmptyView()
+                    }
+//                case .recipeDetails:
+//                    NavigationLink(
+//                        destination: RecipeDetailsPageView(navigationStack: $navigationStack, selectedRecipe: $selectedRecipe)
+//                            .navigationBarBackButtonHidden(true)
+//                            .navigationBarItems(leading: Button("Back") {
+//                                navigationStack.removeLast()
+//                        }), isActive: .constant(true)) {
+//                        EmptyView()
+//                    }
+                default:
+                    NavigationLink(
+                        destination:
+                            CatalogView(navigationStack: $navigationStack)
+                            .navigationBarBackButtonHidden(true)
+                    ) {
+                        CatalogView(navigationStack: $navigationStack)
+                    }
+                }
             }
             .navigationTitle(LocalizedStringKey("tab_catalog")).navigationBarTitleDisplayMode(.inline)
             .toolbar(content: {

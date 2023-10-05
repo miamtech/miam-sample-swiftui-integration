@@ -47,6 +47,12 @@
 		2670B9EE2ACEB4CA00A188AC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2670B95E2ACEB31300A188AC /* Localizable.strings */; };
 		2670B9EF2ACEB4CD00A188AC /* mock_stores.json in Resources */ = {isa = PBXBuildFile; fileRef = 2670B9692ACEB31300A188AC /* mock_stores.json */; };
 		2670B9F12ACEBA9C00A188AC /* MiamNeutraliOSFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 2670B9F02ACEBA9C00A188AC /* MiamNeutraliOSFramework */; };
+		2670B9F42ACEC1A400A188AC /* CatalogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9F32ACEC1A400A188AC /* CatalogView.swift */; };
+		2670B9F62ACEC22500A188AC /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9F52ACEC22500A188AC /* PreferencesView.swift */; };
+		2670B9F82ACEC2C000A188AC /* PreferencesSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9F72ACEC2C000A188AC /* PreferencesSearchView.swift */; };
+		2670B9FA2ACEC34C00A188AC /* FiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9F92ACEC34C00A188AC /* FiltersView.swift */; };
+		2670B9FC2ACEC41500A188AC /* CatalogResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9FB2ACEC41500A188AC /* CatalogResultsView.swift */; };
+		2670B9FE2ACEC5EF00A188AC /* CatalogSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670B9FD2ACEC5EF00A188AC /* CatalogSearchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +119,12 @@
 		2670B98B2ACEB31300A188AC /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		2670B98C2ACEB31300A188AC /* MiamManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiamManager.swift; sourceTree = "<group>"; };
 		2670B98D2ACEB31300A188AC /* SampleMiamIntegrationSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMiamIntegrationSwiftUI.swift; sourceTree = "<group>"; };
+		2670B9F32ACEC1A400A188AC /* CatalogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogView.swift; sourceTree = "<group>"; };
+		2670B9F52ACEC22500A188AC /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		2670B9F72ACEC2C000A188AC /* PreferencesSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesSearchView.swift; sourceTree = "<group>"; };
+		2670B9F92ACEC34C00A188AC /* FiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersView.swift; sourceTree = "<group>"; };
+		2670B9FB2ACEC41500A188AC /* CatalogResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogResultsView.swift; sourceTree = "<group>"; };
+		2670B9FD2ACEC5EF00A188AC /* CatalogSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogSearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +258,7 @@
 		2670B96C2ACEB31300A188AC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2670B9F22ACEC18A00A188AC /* Catalog */,
 				2670B96D2ACEB31300A188AC /* CatalogTabView.swift */,
 				2670B96E2ACEB31300A188AC /* MyFavoritesView.swift */,
 				2670B96F2ACEB31300A188AC /* TabbedView.swift */,
@@ -311,6 +324,19 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2670B9F22ACEC18A00A188AC /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				2670B9F32ACEC1A400A188AC /* CatalogView.swift */,
+				2670B9F52ACEC22500A188AC /* PreferencesView.swift */,
+				2670B9F72ACEC2C000A188AC /* PreferencesSearchView.swift */,
+				2670B9F92ACEC34C00A188AC /* FiltersView.swift */,
+				2670B9FB2ACEC41500A188AC /* CatalogResultsView.swift */,
+				2670B9FD2ACEC5EF00A188AC /* CatalogSearchView.swift */,
+			);
+			path = Catalog;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -455,11 +481,16 @@
 				2670B9922ACEB35200A188AC /* MiamManager.swift in Sources */,
 				2670B9942ACEB35200A188AC /* Groceries.swift in Sources */,
 				2670B9952ACEB35200A188AC /* UserInformation.swift in Sources */,
+				2670B9FA2ACEC34C00A188AC /* FiltersView.swift in Sources */,
 				2670B9962ACEB35200A188AC /* MyProduct.swift in Sources */,
+				2670B9FE2ACEC5EF00A188AC /* CatalogSearchView.swift in Sources */,
 				2670B9972ACEB35200A188AC /* MyBasket.swift in Sources */,
+				2670B9F62ACEC22500A188AC /* PreferencesView.swift in Sources */,
 				2670B9982ACEB35200A188AC /* MyProductsRepository.swift in Sources */,
+				2670B9F42ACEC1A400A188AC /* CatalogView.swift in Sources */,
 				2670B99A2ACEB35200A188AC /* JSONHelpers.swift in Sources */,
 				2670B99B2ACEB35200A188AC /* NavigationView.swift in Sources */,
+				2670B9F82ACEC2C000A188AC /* PreferencesSearchView.swift in Sources */,
 				2670B99C2ACEB35200A188AC /* Font.swift in Sources */,
 				2670B99D2ACEB35200A188AC /* UIContants.swift in Sources */,
 				2670B99E2ACEB35200A188AC /* Button.swift in Sources */,
@@ -478,6 +509,7 @@
 				2670B9AB2ACEB35200A188AC /* RecipeDetailsPageView.swift in Sources */,
 				2670B9AC2ACEB35200A188AC /* MealPlannerView.swift in Sources */,
 				2670B9AD2ACEB35200A188AC /* MealPlannerFormPage.swift in Sources */,
+				2670B9FC2ACEC41500A188AC /* CatalogResultsView.swift in Sources */,
 				2670B9AE2ACEB35200A188AC /* MealPlannerRecapPageView.swift in Sources */,
 				2670B9AF2ACEB35200A188AC /* MealPlannerReplaceRecipe.swift in Sources */,
 				2670B9B02ACEB35200A188AC /* MealPlannerBasketPreviewPageView.swift in Sources */,
@@ -652,7 +684,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SampleMiamIntegrationSwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = VLHN7Y8965;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -681,7 +713,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SampleMiamIntegrationSwiftUI/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = VLHN7Y8965;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
