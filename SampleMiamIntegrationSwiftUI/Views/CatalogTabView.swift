@@ -10,11 +10,7 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
-protocol NavigationState {
-//    var isRecipeDetails: Bool { get }
-}
-
-enum CatalogNavigationState: NavigationState {
+enum CatalogNavigationState  {
     case catalog
     case mealPlanner
     case preferences
@@ -60,7 +56,7 @@ struct CatalogTabView: View {
                         navigationStack: $navigationStack,
                         selectedRecipe: $selectedRecipe)
                     .navigationBarBackButtonHidden(true)
-                    .transition(.move(edge: .trailing))
+                    .transition(.moveAndFade)
                 case .mealPlanner:
                     PageWithHeader(
                         navigationStack: $navigationStack,
@@ -101,7 +97,7 @@ struct CatalogTabView: View {
                         navigationStack: $navigationStack,
                         selectedRecipe: $selectedRecipe)
                     .navigationBarBackButtonHidden(true)
-                    .transition(.move(edge: .trailing))
+                    .transition(.moveAndFade)
                 }
             }
             .navigationTitle(LocalizedStringKey("tab_catalog")).navigationBarTitleDisplayMode(.inline)

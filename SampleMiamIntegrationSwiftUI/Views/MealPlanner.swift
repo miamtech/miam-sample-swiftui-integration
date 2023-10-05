@@ -9,7 +9,7 @@
 import SwiftUI
 import MiamIOSFramework
 
-enum MealPlannerNavigationState: NavigationState {
+enum MealPlannerNavigationState {
     case form
     case mealPlanner
     case replaceRecipe
@@ -25,53 +25,70 @@ struct MealPlanner: View {
     @SwiftUI.State private var recipes: [String]?
     @State private var navigationStack: [MealPlannerNavigationState] = []
     @SwiftUI.State private var selectedRecipe: String = ""
+    
+    struct PageWithHeader<Content: View>: View {
+        private let view: Content
+        @Binding var navigationStack: [MealPlannerNavigationState]
+        init(navigationStack: Binding<[MealPlannerNavigationState]>, view: Content) {
+            self.view = view
+            _navigationStack = navigationStack
+        }
+        var body: some View {
+            view
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: Button("Back") {
+                    navigationStack.removeLast()
+                })
+                .transition(.moveAndFade)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
                 switch navigationStack.last {
                 case .mealPlanner:
-                    MealPlannerView(navigationStack: $navigationStack)
-                        .navigationBarBackButtonHidden(true)
-                        .navigationBarItems(leading: Button("Back") {
-                            navigationStack.removeLast()
-                        })
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: MealPlannerView(navigationStack: $navigationStack))
                 case .replaceRecipe:
-                    MealPlannerReplaceRecipe(navigationStack: $navigationStack, selectedRecipe: $selectedRecipe)
-                        .navigationBarBackButtonHidden(true)
-                        .navigationBarItems(leading: Button("Back") {
-                            navigationStack.removeLast()
-                        })
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: MealPlannerReplaceRecipe(
+                            navigationStack: $navigationStack,
+                            selectedRecipe: $selectedRecipe))
                 case .recipeDetails:
-                    RecipeDetailsPageView(
-                        popRecipeDetails: {  navigationStack.removeLast() },
-                        selectedRecipe: $selectedRecipe)
-                    .navigationBarBackButtonHidden(true)
-                    .navigationBarItems(leading: Button("Back") {
-                        navigationStack.removeLast()
-                    })
-                case .basketPreview: MealPlannerBasketPreviewPageView(navigationStack: $navigationStack, selectedRecipe: $selectedRecipe)
-                        .navigationBarBackButtonHidden(true)
-                        .navigationBarItems(leading: Button("Back") {
-                            navigationStack.removeLast()
-                        })
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: RecipeDetailsPageView(
+                            popRecipeDetails: { withAnimation {
+                                navigationStack.removeLast()
+                                return
+                            }},
+                            selectedRecipe: $selectedRecipe))
+                case .basketPreview:
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: MealPlannerBasketPreviewPageView(
+                            navigationStack: $navigationStack,
+                            selectedRecipe: $selectedRecipe))
                 case .itemSelector:
-                    ItemSelectorPageView(navigationStack: $navigationStack, selectedRecipe: $selectedRecipe)
-                        .navigationBarBackButtonHidden(true)
-                        .navigationBarItems(leading: Button("Back") {
-                            navigationStack.removeLast()
-                        })
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: ItemSelectorPageView(
+                            navigationStack: $navigationStack,
+                            selectedRecipe: $selectedRecipe))
                 case .recapRecipes:
-                    MealPlannerRecapPageView()
-                        .navigationBarBackButtonHidden(true)
-                        .navigationBarItems(leading: Button("Back") {
-                            navigationStack.removeLast()
-                        })
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: MealPlannerRecapPageView())
                 default:
                     MealPlannerFormPage(navigationStack: $navigationStack, recipes: $recipes)
                         .navigationBarBackButtonHidden(true)
                         .navigationBarItems(leading: Button("Back") {
                             parentNavigationStack.removeLast()
                         })
+                        .transition(.moveAndFade)
                 }
             }
         }

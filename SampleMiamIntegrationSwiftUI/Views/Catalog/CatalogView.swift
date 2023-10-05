@@ -74,6 +74,9 @@ struct CatalogView: View {
                 preferencesTapped: { withAnimation {
                     navigationStack.append(.preferences)
                 }},
+                launchMealPlanner: { withAnimation {
+                    navigationStack.append(.mealPlanner)
+                }},
                 myMealsButtonTapped: {
                     print("myMealsButtonTapped")
                 }),
