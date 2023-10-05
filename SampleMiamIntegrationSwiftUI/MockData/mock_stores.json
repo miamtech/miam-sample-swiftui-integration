@@ -1,0 +1,11 @@
+
+[
+    {
+        "id": "miam_test",
+        "name": "Test store miam"
+    },
+    {
+        "id": "test_store_unknown",
+        "name": "Test store unknown"
+    }
+]

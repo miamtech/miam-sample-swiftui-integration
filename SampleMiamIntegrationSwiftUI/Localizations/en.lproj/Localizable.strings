@@ -1,0 +1,34 @@
+/* 
+  Localizable.strings
+  iosApp
+
+  Created by didi on 4/18/23.
+  Copyright © 2023 Miam. All rights reserved.
+*/
+
+// tabs
+"tab_products" = "Meals Ideas";
+"tab_meals" = "My Meals";
+"tab_basket" = "My Basket";
+"tab_catalog" = "Catalog";
+"tab_favorites" = "Favorites";
+// auth
+"sign_in_page" = "Sign In";
+"must_sign_in" = "You must sign in";
+"login_btn" = "Login";
+"not_logged_in" = "You're not logged in";
+"enter_userID" = "Please enter a userID";
+"continue_as_anon" = "Continue As Anonymous";
+"your_userID_is" = "Your UserId is %@";
+"change_userId" = "Change UserID";
+"sign_out" = "Sign Out";
+"delete_account" = "Delete Account";
+"user" = "User";
+"confirm" = "Confirm";
+// store
+"choose_store" = "Choose Store";
+"store" = "Store";
+"your_store_is" = "Your Store is %@";
+"change_store" = "Change Store";
+// utils
+"account_settings" = "Account Settings";
