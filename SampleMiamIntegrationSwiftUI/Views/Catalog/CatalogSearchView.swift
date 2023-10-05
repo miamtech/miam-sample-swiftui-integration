@@ -23,7 +23,10 @@ struct CatalogSearchView: View {
     var body: some View {
         CatalogSearchViewTemplate(params: CatalogSearchParameters(
             applySearch: {
-                print("apply")
+                withAnimation {    
+                    navigationStack.removeLast()
+                    navigationStack.append(.catalogResults)
+                }
             })
         )
     }

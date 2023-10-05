@@ -32,23 +32,29 @@ struct CatalogResultsView: View {
         recipeCardFillMaxWidth: true
     )
     @Binding var navigationStack: [CatalogNavigationState]
+    @Binding var selectedRecipe: String
     var body: some View {
         CatalogResultsViewTemplate(
             params: CatalogViewParams(
                 filtersTapped: {
-                    print("filtersTapped")
+                    withAnimation {
+                        navigationStack.append(.filters)
+                    }
                 },
                 searchTapped: {
-                    print("searchTapped")
+                    withAnimation {
+                        navigationStack.append(.catalogSearch)
+                    }
                 },
                 favoritesTapped: {
-                    print("favoritesTapped")
+                    withAnimation {
+                        navigationStack.append(.catalogResults)
+                    }
                 },
                 preferencesTapped: {
-                    print("preferencesTapped")
-                },
-                launchMealPlanner: {
-                    print("launchMealPlanner")
+                    withAnimation {
+                        navigationStack.append(.preferences)
+                    }
                 },
                 myMealsButtonTapped: {
                     print("myMealsButtonTapped")
@@ -57,9 +63,15 @@ struct CatalogResultsView: View {
             showRecipes: { catalog in
                 print("show")
             }, noResultsRedirect: {
-                print("no results")
+                withAnimation {
+                    navigationStack.removeLast()
+                    return
+                }
             }, onRecipeTapped: { recipeId in
-                print("recipe tapped")
+                selectedRecipe = recipeId
+                withAnimation {
+                    navigationStack.append(.recipeDetails)
+                }
             }),
             config: MiamRecipesListViewConfig
         )
@@ -69,7 +81,8 @@ struct CatalogResultsView: View {
 struct CatalogResultsView_Previews: PreviewProvider {
     static var previews: some View {
         CatalogResultsView(
-            navigationStack: .constant([.catalog])
+            navigationStack: .constant([.catalog]),
+            selectedRecipe: .constant("test")
         )
     }
 }

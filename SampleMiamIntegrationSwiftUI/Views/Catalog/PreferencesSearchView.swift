@@ -22,9 +22,10 @@ struct PreferencesSearchView: View {
     @Binding var navigationStack: [CatalogNavigationState]
     var body: some View {
         PreferencesSearchViewTemplate(params: PreferencesSearchParameters(
-            closeSearch: {
-                print("close")
-            }))
+            closeSearch: { withAnimation {
+                navigationStack.removeLast()
+                return
+            }}))
     }
 }
 

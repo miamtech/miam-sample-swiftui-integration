@@ -34,17 +34,17 @@ struct MealIdeas: View {
 
                     })
                     ScrollView {
-                        NavigationLink(isActive: $showMealPlanner) {
-                            MealPlanner(showMealPlanner: $showMealPlanner)
-                        } label: {
-                            MealPlannerCallToActionView(
-                                template: MiamBudgetCallToAction(),
-                                onTapGesture: {
-                                    showMealPlanner.toggle()
-                                }
-                            )
-                        }
-                        .padding([.top], Dimension.sharedInstance.mPadding)
+//                        NavigationLink(isActive: $showMealPlanner) {
+//                            MealPlanner(showMealPlanner: $showMealPlanner)
+//                        } label: {
+//                            MealPlannerCallToActionView(
+//                                template: MiamBudgetCallToAction(),
+//                                onTapGesture: {
+//                                    showMealPlanner.toggle()
+//                                }
+//                            )
+//                        }
+//                        .padding([.top], Dimension.sharedInstance.mPadding)
 
                         if miamManager.isReady {
                             Button("toggle tag", action: { showTag = !showTag})

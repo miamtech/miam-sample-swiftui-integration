@@ -24,12 +24,13 @@ struct PreferencesView: View {
     @Binding var navigationStack: [CatalogNavigationState]
     var body: some View {
         PreferencesViewTemplate(params: MiamNeutralPreferencesViewParameters(
-            closePreferences: {
-                print("close")
-            },
-            goToSearchView: {
-                print("go to search")
-            }))
+            closePreferences: { withAnimation {
+                navigationStack.removeLast()
+                return
+            }},
+            goToSearchView: { withAnimation {
+                navigationStack.append(.preferencesSearch)
+            }}))
     }
 }
 

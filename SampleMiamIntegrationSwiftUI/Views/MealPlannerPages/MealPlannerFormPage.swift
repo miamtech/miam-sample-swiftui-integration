@@ -15,7 +15,7 @@ struct MealPlannerFormPage: View {
     var body: some View {
         MealPlannerFormView(budgetForm: MiamBudgetForm(), budgetInfos: nil) { recipes in
             self.recipes = recipes
-            navigationStack.append(.mealPlanner)
+            withAnimation { navigationStack.append(.mealPlanner) }
         }
     }
 }

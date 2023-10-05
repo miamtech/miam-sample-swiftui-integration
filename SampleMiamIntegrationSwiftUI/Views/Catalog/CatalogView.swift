@@ -21,7 +21,7 @@ public struct CatalogViewParams: CatalogViewParameters {
         searchTapped: @escaping () -> Void,
         favoritesTapped: @escaping () -> Void,
         preferencesTapped: @escaping () -> Void,
-        launchMealPlanner: (() -> Void)?,
+        launchMealPlanner: (() -> Void)? = nil,
         myMealsButtonTapped: @escaping () -> Void
     ) {
         self.filtersTapped = filtersTapped
@@ -51,6 +51,7 @@ public class MiamNeutralCatalogPackageRowParams: CatalogPackageRowParameters {
 
 struct CatalogView: View {
     @Binding var navigationStack: [CatalogNavigationState]
+    @Binding var selectedRecipe: String
     var MiamRecipesListViewConfig = RecipesListViewConfig(
         recipesListColumns: 2,
         recipesListSpacing: 8,
@@ -61,30 +62,30 @@ struct CatalogView: View {
     var body: some View {
         CatalogViewTemplate(
             params: CatalogViewParams(
-                filtersTapped: {
+                filtersTapped: { withAnimation {
                     navigationStack.append(.filters)
-                },
-                searchTapped: {
+                }},
+                searchTapped: { withAnimation {
                     navigationStack.append(.catalogSearch)
-                },
-                favoritesTapped: {
+                }},
+                favoritesTapped: { withAnimation {
                     navigationStack.append(.catalogResults)
-                },
-                preferencesTapped: {
+                }},
+                preferencesTapped: { withAnimation {
                     navigationStack.append(.preferences)
-                },
-                launchMealPlanner: {
-                    navigationStack.append(.mealPlanner)
-                },
+                }},
                 myMealsButtonTapped: {
-//                    print("myMealsButtonTapped")
+                    print("myMealsButtonTapped")
                 }),
             catalogPackageRowParams: MiamNeutralCatalogPackageRowParams(
-                showRecipes: {
+                showRecipes: { withAnimation {
                     navigationStack.append(.catalogResults)
-                },
+                }},
                 onRecipeTapped: { recipeId in
-                    print("onRecipeTapped")
+                    withAnimation {
+                        selectedRecipe = recipeId
+                        navigationStack.append(.recipeDetails)
+                    }
                 }),
             config: MiamRecipesListViewConfig)
     }

@@ -10,8 +10,11 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
+protocol NavigationState {
+//    var isRecipeDetails: Bool { get }
+}
 
-enum CatalogNavigationState {
+enum CatalogNavigationState: NavigationState {
     case catalog
     case mealPlanner
     case preferences
@@ -30,95 +33,75 @@ struct CatalogTabView: View {
     @SwiftUI.State private var selectedRecipe: String = ""
     
     @State private var navigationStack: [CatalogNavigationState] = []
+    
+    struct PageWithHeader<Content: View>: View {
+        private let view: Content
+        @Binding var navigationStack: [CatalogNavigationState]
+        init(navigationStack: Binding<[CatalogNavigationState]>, view: Content) {
+            self.view = view
+            _navigationStack = navigationStack
+        }
+        var body: some View {
+            view
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: Button("Back") {
+                    navigationStack.removeLast()
+                })
+                .transition(.moveAndFade)
+        }
+    }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 switch navigationStack.last {
                 case .catalog:
-                    NavigationLink(
-                        destination:
-                            CatalogView(
-                                navigationStack: $navigationStack)
-                            .navigationBarBackButtonHidden(true)
-                        ) {
-                        EmptyView()
-                    }
-//                case .mealPlanner:
-//                    NavigationLink(
-//                        destination:
-//                            MealPlanner(navigationStack: $navigationStack)
-//                            .navigationBarBackButtonHidden(true)
-//                            .navigationBarItems(leading: Button("Back") {
-//                                navigationStack.removeLast()
-//                        }), isActive: .constant(true)) {
-//                        EmptyView()
-//                    }
+                    CatalogView(
+                        navigationStack: $navigationStack,
+                        selectedRecipe: $selectedRecipe)
+                    .navigationBarBackButtonHidden(true)
+                    .transition(.move(edge: .trailing))
+                case .mealPlanner:
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: MealPlanner(parentNavigationStack: $navigationStack))
                 case .preferences:
-                    NavigationLink(
-                        destination: PreferencesView(navigationStack: $navigationStack)
-                            .navigationBarBackButtonHidden(true)
-                            .navigationBarItems(leading: Button("Back") {
-                                navigationStack.removeLast()
-                        }), isActive: .constant(true)) {
-                        EmptyView()
-                    }
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: PreferencesView(navigationStack: $navigationStack))
                 case .preferencesSearch:
-                    NavigationLink(
-                        destination: PreferencesSearchView(navigationStack: $navigationStack)
-                            .navigationBarBackButtonHidden(true)
-                            .navigationBarItems(leading: Button("Back") {
-                                navigationStack.removeLast()
-                        }), isActive: .constant(true)) {
-                        EmptyView()
-                    }
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: PreferencesSearchView(navigationStack: $navigationStack))
                 case .catalogSearch:
-                    NavigationLink(
-                        destination:
-                            CatalogSearchView(navigationStack: $navigationStack)
-                            .navigationBarBackButtonHidden(true)
-                            .navigationBarItems(leading: Button("Back") {
-                                navigationStack.removeLast()
-                        }), isActive: .constant(true)) {
-                        EmptyView()
-                    }
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: CatalogSearchView(navigationStack: $navigationStack))
                 case .filters:
-                    NavigationLink(
-                        destination:
-                            FiltersView(navigationStack: $navigationStack)
-                            .navigationBarBackButtonHidden(true)
-                            .navigationBarItems(leading: Button("Back") {
-                                navigationStack.removeLast()
-                        }), isActive: .constant(true)) {
-                        EmptyView()
-                    }
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: FiltersView(navigationStack: $navigationStack))
                 case .catalogResults:
-                    NavigationLink(
-                        destination:
-                            CatalogResultsView(navigationStack: $navigationStack)
-                            .navigationBarBackButtonHidden(true)
-                            .navigationBarItems(leading: Button("Back") {
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: CatalogResultsView(
+                            navigationStack: $navigationStack,
+                            selectedRecipe: $selectedRecipe))
+                case .recipeDetails:
+                    PageWithHeader(
+                        navigationStack: $navigationStack,
+                        view: RecipeDetailsPageView(
+                            popRecipeDetails: { withAnimation {
                                 navigationStack.removeLast()
-                        }), isActive: .constant(true)) {
-                        EmptyView()
-                    }
-//                case .recipeDetails:
-//                    NavigationLink(
-//                        destination: RecipeDetailsPageView(navigationStack: $navigationStack, selectedRecipe: $selectedRecipe)
-//                            .navigationBarBackButtonHidden(true)
-//                            .navigationBarItems(leading: Button("Back") {
-//                                navigationStack.removeLast()
-//                        }), isActive: .constant(true)) {
-//                        EmptyView()
-//                    }
+                                return
+                            }},
+                            selectedRecipe: $selectedRecipe))
                 default:
-                    NavigationLink(
-                        destination:
-                            CatalogView(navigationStack: $navigationStack)
-                            .navigationBarBackButtonHidden(true)
-                    ) {
-                        CatalogView(navigationStack: $navigationStack)
-                    }
+                    CatalogView(
+                        navigationStack: $navigationStack,
+                        selectedRecipe: $selectedRecipe)
+                    .navigationBarBackButtonHidden(true)
+                    .transition(.move(edge: .trailing))
                 }
             }
             .navigationTitle(LocalizedStringKey("tab_catalog")).navigationBarTitleDisplayMode(.inline)

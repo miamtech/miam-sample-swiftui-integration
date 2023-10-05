@@ -10,7 +10,7 @@ import SwiftUI
 import MiamIOSFramework
 
 struct RecipeDetailsPageView: View {
-    @Binding var navigationStack: [MealPlannerNavigationState]
+    var popRecipeDetails: () -> Void
     @Binding var selectedRecipe: String
     var body: some View {
         // TODO: on 3.13 -> move this to MiamN templating
@@ -20,6 +20,8 @@ struct RecipeDetailsPageView: View {
 
 struct RecipeDetailsPageView_Previews: PreviewProvider {
     static var previews: some View {
-        RecipeDetailsPageView(navigationStack: .constant([.mealPlanner]), selectedRecipe: .constant("id"))
+        RecipeDetailsPageView(
+            popRecipeDetails: {},
+            selectedRecipe: .constant("id"))
     }
 }

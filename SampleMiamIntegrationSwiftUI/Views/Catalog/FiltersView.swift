@@ -26,9 +26,15 @@ struct FiltersView: View {
     var body: some View {
         CatalogFilterViewTemplate(params: FiltersParameters(
             applyFilters: {
-                print("apply")
+                withAnimation {
+                    navigationStack.removeLast()
+                    navigationStack.append(.catalogResults)
+                }
             }, closeFilters: {
-                print("close")
+                withAnimation {
+                    navigationStack.removeLast()
+                    return
+                }
             })
         )
     }
