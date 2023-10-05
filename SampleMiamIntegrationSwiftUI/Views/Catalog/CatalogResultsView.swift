@@ -31,34 +31,27 @@ struct CatalogResultsView: View {
         recipeCardDimensions: CGSize(width: 300, height: 380),
         recipeCardFillMaxWidth: true
     )
+    @EnvironmentObject var tabViewModel: TabViewModel
     @Binding var navigationStack: [CatalogNavigationState]
     @Binding var selectedRecipe: String
     var body: some View {
         CatalogResultsViewTemplate(
             params: CatalogViewParams(
-                filtersTapped: {
-                    withAnimation {
-                        navigationStack.append(.filters)
-                    }
-                },
-                searchTapped: {
-                    withAnimation {
-                        navigationStack.append(.catalogSearch)
-                    }
-                },
-                favoritesTapped: {
-                    withAnimation {
-                        navigationStack.append(.catalogResults)
-                    }
-                },
-                preferencesTapped: {
-                    withAnimation {
-                        navigationStack.append(.preferences)
-                    }
-                },
-                myMealsButtonTapped: {
-                    print("myMealsButtonTapped")
-                }),
+                filtersTapped: { withAnimation {
+                    navigationStack.append(.filters)
+                }},
+                searchTapped: { withAnimation {
+                    navigationStack.append(.catalogSearch)
+                }},
+                favoritesTapped: { withAnimation {
+                    navigationStack.append(.catalogResults)
+                }},
+                preferencesTapped: {  withAnimation {
+                    navigationStack.append(.preferences)
+                }},
+                myMealsButtonTapped: { withAnimation {
+                    tabViewModel.selectedTab = 1
+                }}),
             recipesListParams: RecipesListParameters(
             showRecipes: { catalog in
                 print("show")

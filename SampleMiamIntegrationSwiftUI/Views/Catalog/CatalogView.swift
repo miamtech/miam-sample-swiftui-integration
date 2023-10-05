@@ -52,6 +52,7 @@ public class MiamNeutralCatalogPackageRowParams: CatalogPackageRowParameters {
 struct CatalogView: View {
     @Binding var navigationStack: [CatalogNavigationState]
     @Binding var selectedRecipe: String
+    @EnvironmentObject var tabViewModel: TabViewModel
     var MiamRecipesListViewConfig = RecipesListViewConfig(
         recipesListColumns: 2,
         recipesListSpacing: 8,
@@ -77,9 +78,9 @@ struct CatalogView: View {
                 launchMealPlanner: { withAnimation {
                     navigationStack.append(.mealPlanner)
                 }},
-                myMealsButtonTapped: {
-                    print("myMealsButtonTapped")
-                }),
+                myMealsButtonTapped: { withAnimation {
+                    tabViewModel.selectedTab = 1
+                }}),
             catalogPackageRowParams: MiamNeutralCatalogPackageRowParams(
                 showRecipes: { withAnimation {
                     navigationStack.append(.catalogResults)

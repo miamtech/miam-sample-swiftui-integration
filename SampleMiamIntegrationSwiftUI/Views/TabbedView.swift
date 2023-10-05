@@ -10,6 +10,7 @@ import SwiftUI
 import MiamIOSFramework
 
 struct TabbedView: View {
+    @EnvironmentObject var tabViewModel: TabViewModel
     let applicationBasket: MyBasket = MyBasket.shared
 
     @ObservedObject var userInfo = UserInformation()
@@ -38,41 +39,42 @@ struct TabbedView: View {
        }
 
     var body: some View {
-        TabView {
+        TabView(selection: $tabViewModel.selectedTab) {
             if #available(iOS 15, *) {
                 MealIdeas(launchAccount: $launchAccountSetting, showAccount: decideShowAccountSettings())
                     .tabItem {
                         Label(LocalizedStringKey("tab_products"), systemImage: "questionmark.square")
                             .accessibilityIdentifier("tab_meal_ideas")
                     }
+                    .tag(0)
             }
             tabRequiresAccount(content: {
                 MealsView(launchAccount: $launchAccountSetting,
                           showAccount: decideShowAccountSettings())},
                                label: LocalizedStringKey("tab_meals"),
-                               systemImage: "fork.knife.circle")
+                               systemImage: "fork.knife.circle").tag(1)
             tabRequiresAccount(content: {
                 MyBasketView(launchAccount: $launchAccountSetting,
                              showAccount: decideShowAccountSettings())},
                                label: LocalizedStringKey("tab_basket"),
-                               systemImage: "cart.fill")
+                               systemImage: "cart.fill").tag(2)
             tabRequiresAccount(content: {
                 CatalogTabView(launchAccount: $launchAccountSetting,
                                showAccount: decideShowAccountSettings())},
                                label: LocalizedStringKey("tab_catalog"),
-                               systemImage: "book.fill")
+                               systemImage: "book.fill").tag(3)
             tabRequiresAccount(content: {
                 MyFavoritesView(launchAccount: $launchAccountSetting,
                                 showAccount: decideShowAccountSettings())},
                                label: LocalizedStringKey("tab_favorites"),
-                               systemImage: "heart.fill")
+                               systemImage: "heart.fill").tag(4)
         }
         .background(Color.white)
         .accentColor(Color("PrimaryColor"))
         .ignoresSafeArea()
-        .sheet(isPresented: $launchAccountSetting, content: {AccountSettings(userInfo: userInfo)})
+        .sheet(isPresented: $launchAccountSetting, content: { AccountSettings(userInfo: userInfo) })
         .onAppear {
-            if shouldPresentSheet {launchSignInButton=true}
+            if shouldPresentSheet { launchSignInButton=true }
         }
     }
 }

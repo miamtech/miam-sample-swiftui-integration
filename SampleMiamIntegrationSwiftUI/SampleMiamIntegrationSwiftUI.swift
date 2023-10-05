@@ -1,12 +1,17 @@
 import SwiftUI
 import miamCore
 
+class TabViewModel: ObservableObject {
+    @Published var selectedTab: Int = 0
+}
+
 @main
 struct SampleMiamIntegrationSwiftUIApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
             TabbedView()
+                .environmentObject(TabViewModel())
         }
     }
 
