@@ -8,13 +8,11 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
-
-
 public func sharedCatalogNavigation(
     selectedView: Binding<String?>,
     tabViewModel: TabViewModel
-) ->  CatalogViewParamsWithMealPlanner {
-    return CatalogViewParamsWithMealPlanner(
+) ->  CatalogViewParams {
+    return CatalogViewParams(
         filtersTapped: { withAnimation {
             selectedView.wrappedValue = "Filters"
         }},
@@ -44,7 +42,6 @@ public class MyLoader: LoadingProtocol {
     }
 }
 
-
 struct CatalogView: View {
     @Binding var selectedRecipe: String
     @Binding var selectedView: String?
@@ -61,7 +58,7 @@ struct CatalogView: View {
             params: sharedCatalogNavigation(
                 selectedView: $selectedView,
                 tabViewModel: tabViewModel),
-            catalogPackageRowParams: DefaultCatalogPackageRowParams(
+            catalogPackageRowParams: CatalogPackageRowParams(
                 showRecipes: { withAnimation {
                     selectedView = "CatalogResults"
                 }},

@@ -12,7 +12,7 @@ import MiamNeutraliOSFramework
 struct FiltersView: View {
     @Binding var selectedView: String?
     var body: some View {
-        CatalogFilterViewTemplate(params: DefaultFiltersParams(
+        CatalogFilterViewTemplate(params: FiltersParams(
             applyFilters: {
                 withAnimation {
                     selectedView = "CatalogResults"
