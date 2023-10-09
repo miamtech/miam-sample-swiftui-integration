@@ -24,7 +24,7 @@ struct CatalogResultsView: View {
             params: sharedCatalogNavigation(
                 selectedView: $selectedView,
                 tabViewModel: tabViewModel),
-            recipesListParams: DefaultRecipesListParams(
+            recipesListParams: RecipesListParams(
                 showRecipes: { catalog in
                     print("show")
                 }, noResultsRedirect: {

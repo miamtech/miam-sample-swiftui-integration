@@ -38,7 +38,7 @@ struct MyFavoritesView: View {
     var body: some View {
         NavigationView {
             FavoritesViewTemplate(
-                params: DefaultFavoritesParams(
+                params: FavoritesParams(
                     showRecipes: { catalog in
                         print("launch catalog")
                     },
