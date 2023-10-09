@@ -82,7 +82,7 @@ struct CatalogTabView: View {
                 destination:
                     PageWithHeader(
                         selectedView: $selectedView,
-                        view: FiltersView(selectedView: $selectedView))
+                        view: FiltersPage(selectedView: $selectedView))
                     .navigationTitle("Filters")
                 , tag: "Filters", selection: $selectedView) { EmptyView() }
             NavigationLink(

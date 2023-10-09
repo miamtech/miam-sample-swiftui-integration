@@ -10,24 +10,7 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
-class NewDefaultFavoritesParams: FavoritesViewParameters {
-    public var showRecipes: (MiamIOSFramework.CatalogPackage) -> Void
-    public var noResultsRedirect: () -> Void
-    public var onRecipeTapped: (String) -> Void
-    public init(
-        showRecipes: @escaping (MiamIOSFramework.CatalogPackage) -> Void,
-        noResultsRedirect: @escaping () -> Void,
-        onRecipeTapped: @escaping (String) -> Void
-    ) {
-        self.showRecipes = showRecipes
-        self.noResultsRedirect = noResultsRedirect
-        self.onRecipeTapped = onRecipeTapped
-    }
-
-    public var background = TestBackground()
-}
-
-public struct TestRecipeCard: RecipeCard {
+public struct TestRecipeCard: CatalogRecipeCardProtocol {
     public func content(recipeCardDimensions: CGSize, recipeInfos: RecipeInfos, actions: RecipeCardActions) -> some View {
         Circle()
             .foregroundColor(.red)

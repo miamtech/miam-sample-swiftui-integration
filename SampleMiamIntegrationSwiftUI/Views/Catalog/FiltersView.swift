@@ -9,10 +9,10 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
-struct FiltersView: View {
+struct FiltersPage: View {
     @Binding var selectedView: String?
     var body: some View {
-        CatalogFilterViewTemplate(params: FiltersParams(
+        FiltersView(params: FiltersParams(
             applyFilters: {
                 withAnimation {
                     selectedView = "CatalogResults"
@@ -26,9 +26,9 @@ struct FiltersView: View {
     }
 }
 
-struct FiltersView_Previews: PreviewProvider {
+struct FiltersPage_Previews: PreviewProvider {
     static var previews: some View {
-        FiltersView(
+        FiltersPage(
             selectedView: .constant(nil)
         )
     }
