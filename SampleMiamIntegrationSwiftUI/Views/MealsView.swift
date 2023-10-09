@@ -8,22 +8,7 @@
 
 import SwiftUI
 import MiamIOSFramework
-
-/// This sets the Callbacks for the MyMeals Overview
-public class MiamNeutralMyMealsParams: BaseViewParameters {}
-
-/// This sets the Callbacks for the BasketRecipe Overview
-public class MiamNeutralBasketRecipeParams: BasketRecipeViewParameters {
-    public var replaceRecipe: () -> Void
-    public var showRecipeDetails: (String) -> Void
-    public init(
-        replaceRecipe: @escaping () -> Void,
-        showRecipeDetails: @escaping (String) -> Void
-    ) {
-        self.replaceRecipe = replaceRecipe
-        self.showRecipeDetails = showRecipeDetails
-    }
-}
+import MiamNeutraliOSFramework
 
 struct MealsView: View {
     var MyMealsBasketViewConfig = BasketRecipesViewConfig(
@@ -41,8 +26,8 @@ struct MealsView: View {
     var body: some View {
         NavigationView {
             MyMealsViewTemplate(
-                params: MiamNeutralMyMealsParams(),
-                basketRecipesParams: MiamNeutralBasketRecipeParams(
+                params: DefaultBaseViewParams(),
+                basketRecipesParams: DefaultBasketRecipeParams(
                     replaceRecipe: { print("replace recipe") },
                     showRecipeDetails: { recipeId in
                         print("showRecipeDetails")

@@ -23,7 +23,7 @@ enum MealPlannerNavigationState {
 }
 
 struct MealPlanner: View {
-    @Binding var parentNavigationStack: [CatalogNavigationState]
+    @Binding var selectedView: String?
     @SwiftUI.State private var recipes: [String]?
     @SwiftUI.State private var navigationStack: [MealPlannerNavigationState] = []
     @SwiftUI.State private var selectedRecipe: String = ""
@@ -101,7 +101,7 @@ struct MealPlanner: View {
                         navigationStack: $navigationStack,
                         recipes: $recipes)
                     .navigationBarItems(leading: Button(action: {
-                        parentNavigationStack.removeLast()
+                        selectedView = nil
                     }) {
                         Text("Back")
                     }.foregroundColor(Color.white))
@@ -114,6 +114,6 @@ struct MealPlanner: View {
 
 struct MealPlanner_Previews: PreviewProvider {
     static var previews: some View {
-        MealPlanner(parentNavigationStack: .constant([]))
+        MealPlanner(selectedView: .constant(nil))
     }
 }

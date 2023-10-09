@@ -7,27 +7,20 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
 
-/// This sets the Templates for the PreferencesSearchView Overview
-public class CatalogSearchParameters: CatalogSearchViewParameters {
-    public var applySearch: () -> Void
-    public init(
-        applySearch: @escaping () -> Void
-    ) {
-        self.applySearch = applySearch
-    }
-}
 
 struct CatalogSearchView: View {
-    @Binding var navigationStack: [CatalogNavigationState]
+    @Binding var selectedView: String?
     var body: some View {
-        CatalogSearchViewTemplate(params: CatalogSearchParameters(
+        CatalogSearchViewTemplate(params: CatalogSearchParams(
             applySearch: {
-                withAnimation {    
-                    navigationStack.removeLast()
-                    navigationStack.append(.catalogResults)
+                withAnimation {
+                    selectedView = "CatalogResults"
                 }
-            })
+            },
+            customBackground: TypeSafeBackground(TestBackground())
+        )
         )
     }
 }
@@ -35,7 +28,7 @@ struct CatalogSearchView: View {
 struct CatalogSearchView_Previews: PreviewProvider {
     static var previews: some View {
         CatalogSearchView(
-            navigationStack: .constant([.catalog])
+            selectedView: .constant(nil)
         )
     }
 }

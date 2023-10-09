@@ -7,33 +7,19 @@
 
 import SwiftUI
 import MiamIOSFramework
-
-/// This sets the Templates for the PreferencesSearchView Overview
-public class FiltersParameters: CatalogFilterViewParameters {
-    public var applyFilters: () -> Void
-    public var closeFilters: () -> Void
-    public init(
-        applyFilters: @escaping () -> Void,
-        closeFilters: @escaping () -> Void
-    ) {
-        self.applyFilters = applyFilters
-        self.closeFilters = closeFilters
-    }
-}
+import MiamNeutraliOSFramework
 
 struct FiltersView: View {
-    @Binding var navigationStack: [CatalogNavigationState]
+    @Binding var selectedView: String?
     var body: some View {
-        CatalogFilterViewTemplate(params: FiltersParameters(
+        CatalogFilterViewTemplate(params: DefaultFiltersParams(
             applyFilters: {
                 withAnimation {
-                    navigationStack.removeLast()
-                    navigationStack.append(.catalogResults)
+                    selectedView = "CatalogResults"
                 }
             }, closeFilters: {
                 withAnimation {
-                    navigationStack.removeLast()
-                    return
+                    selectedView = nil
                 }
             })
         )
@@ -43,7 +29,7 @@ struct FiltersView: View {
 struct FiltersView_Previews: PreviewProvider {
     static var previews: some View {
         FiltersView(
-            navigationStack: .constant([.catalog])
+            selectedView: .constant(nil)
         )
     }
 }

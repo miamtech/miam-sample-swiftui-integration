@@ -6,30 +6,18 @@
 //
 import SwiftUI
 import MiamIOSFramework
-
-/// This sets the Templates for the CatalogFiltersPage Overview
-public class MiamNeutralPreferencesViewParameters: PreferencesViewParameters {
-    public var closePreferences: () -> Void
-    public var goToSearchView: () -> Void
-    public init(
-        closePreferences: @escaping () -> Void,
-        goToSearchView: @escaping () -> Void
-    ) {
-        self.closePreferences = closePreferences
-        self.goToSearchView = goToSearchView
-    }
-}
+import MiamNeutraliOSFramework
 
 struct PreferencesView: View {
-    @Binding var navigationStack: [CatalogNavigationState]
+    @Binding var selectedView: String?
     var body: some View {
-        PreferencesViewTemplate(params: MiamNeutralPreferencesViewParameters(
+        PreferencesViewTemplate(params: DefaultPreferencesParams(
             closePreferences: { withAnimation {
-                navigationStack.removeLast()
+                selectedView = nil
                 return
             }},
             goToSearchView: { withAnimation {
-                navigationStack.append(.preferencesSearch)
+                selectedView = "PreferencesSearch"
             }}))
     }
 }
@@ -37,7 +25,7 @@ struct PreferencesView: View {
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView(
-            navigationStack: .constant([.catalog])
+            selectedView: .constant(nil)
         )
     }
 }

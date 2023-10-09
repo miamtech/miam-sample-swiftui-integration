@@ -7,22 +7,7 @@
 
 import SwiftUI
 import MiamIOSFramework
-
-/// This sets the Templates for the PreferencesSearchView Overview
-public class RecipesListParameters: RecipesListViewParameters {
-    public var showRecipes: (MiamIOSFramework.CatalogPackage) -> Void
-    public var noResultsRedirect: () -> Void
-    public var onRecipeTapped: (String) -> Void
-    public init(
-        showRecipes: @escaping (MiamIOSFramework.CatalogPackage) -> Void,
-        noResultsRedirect: @escaping () -> Void,
-        onRecipeTapped: @escaping (String) -> Void
-    ) {
-        self.showRecipes = showRecipes
-        self.noResultsRedirect = noResultsRedirect
-        self.onRecipeTapped = onRecipeTapped
-    }
-}
+import MiamNeutraliOSFramework
 
 struct CatalogResultsView: View {
     var MiamRecipesListViewConfig = RecipesListViewConfig(
@@ -32,40 +17,27 @@ struct CatalogResultsView: View {
         recipeCardFillMaxWidth: true
     )
     @EnvironmentObject var tabViewModel: TabViewModel
-    @Binding var navigationStack: [CatalogNavigationState]
+    @Binding var selectedView: String?
     @Binding var selectedRecipe: String
     var body: some View {
         CatalogResultsViewTemplate(
-            params: CatalogViewParams(
-                filtersTapped: { withAnimation {
-                    navigationStack.append(.filters)
-                }},
-                searchTapped: { withAnimation {
-                    navigationStack.append(.catalogSearch)
-                }},
-                favoritesTapped: { withAnimation {
-                    navigationStack.append(.catalogResults)
-                }},
-                preferencesTapped: {  withAnimation {
-                    navigationStack.append(.preferences)
-                }},
-                myMealsButtonTapped: { withAnimation {
-                    tabViewModel.selectedTab = 1
-                }}),
-            recipesListParams: RecipesListParameters(
-            showRecipes: { catalog in
-                print("show")
-            }, noResultsRedirect: {
-                withAnimation {
-                    navigationStack.removeLast()
-                    return
-                }
-            }, onRecipeTapped: { recipeId in
-                selectedRecipe = recipeId
-                withAnimation {
-                    navigationStack.append(.recipeDetails)
-                }
-            }),
+            params: sharedCatalogNavigation(
+                selectedView: $selectedView,
+                tabViewModel: tabViewModel),
+            recipesListParams: DefaultRecipesListParams(
+                showRecipes: { catalog in
+                    print("show")
+                }, noResultsRedirect: {
+                    withAnimation {
+                        selectedView = nil
+                        return
+                    }
+                }, onRecipeTapped: { recipeId in
+                    selectedRecipe = recipeId
+                    withAnimation {
+                        selectedView = "RecipeDetails"
+                    }
+                }),
             config: MiamRecipesListViewConfig
         )
     }
@@ -74,7 +46,7 @@ struct CatalogResultsView: View {
 struct CatalogResultsView_Previews: PreviewProvider {
     static var previews: some View {
         CatalogResultsView(
-            navigationStack: .constant([.catalog]),
+            selectedView: .constant(nil),
             selectedRecipe: .constant("test")
         )
     }
