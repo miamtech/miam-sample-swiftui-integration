@@ -11,12 +11,9 @@ import MiamNeutraliOSFramework
 struct PreferencesView: View {
     @Binding var selectedView: String?
     var body: some View {
-        PreferencesViewTemplate(params: DefaultPreferencesParams(
-            closePreferences: { withAnimation {
-                selectedView = nil
-                return
-            }},
-            goToSearchView: { withAnimation {
+        PreferencesViewTemplate(params: PreferencesParameters(
+            onClosed: { withAnimation { selectedView = nil }},
+            onGoToSearch: { withAnimation {
                 selectedView = "PreferencesSearch"
             }}))
     }

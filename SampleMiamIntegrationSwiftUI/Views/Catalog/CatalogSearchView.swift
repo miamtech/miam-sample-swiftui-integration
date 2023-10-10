@@ -8,19 +8,17 @@
 import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
-
+import miamCore
 
 struct CatalogSearchView: View {
     @Binding var selectedView: String?
     var body: some View {
-        CatalogSearchViewTemplate(params: CatalogSearchParams(
-            applySearch: {
-                withAnimation {
-                    selectedView = "CatalogResults"
-                }
-            },
-            customBackground: TypeSafeBackground(TestBackground())
-        )
+        CatalogSearchViewTemplate(params: CatalogSearchParameters(
+            onApplied: { withAnimation {
+                selectedView = "CatalogResults"
+            }},
+            background: TypeSafeBackground(TestBackground())
+        ), singletonFilterViewModel: MiamDI.shared.recipeFilterViewModel
         )
     }
 }

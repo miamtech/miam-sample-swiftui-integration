@@ -12,10 +12,9 @@ import MiamNeutraliOSFramework
 struct PreferencesSearchView: View {
     @Binding var selectedView: String?
     var body: some View {
-        PreferencesSearchViewTemplate(params: DefaultPreferencesSearchParams(
-            closeSearch: { withAnimation {
+        PreferencesSearchViewTemplate(params: PreferencesSearchParameters(
+            onClosed: { withAnimation {
                 selectedView = nil
-                return
             }}))
     }
 }

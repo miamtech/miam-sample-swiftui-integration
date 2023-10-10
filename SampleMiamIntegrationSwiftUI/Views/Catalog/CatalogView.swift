@@ -11,28 +11,28 @@ import MiamNeutraliOSFramework
 public func sharedCatalogNavigation(
     selectedView: Binding<String?>,
     tabViewModel: TabViewModel
-) ->  CatalogViewParams {
-    return CatalogViewParams(
-        filtersTapped: { withAnimation {
+) ->  CatalogParameters {
+    return CatalogParameters(
+        onFiltersTapped: { withAnimation {
             selectedView.wrappedValue = "Filters"
         }},
-        searchTapped: { withAnimation {
+        onSearchTapped: { withAnimation {
             selectedView.wrappedValue = "CatalogSearch"
         }},
-        favoritesTapped: { withAnimation {
+        onFavoritesTapped: { withAnimation {
             selectedView.wrappedValue = "CatalogResults"
         }},
-        preferencesTapped: { withAnimation {
+        onPreferencesTapped: { withAnimation {
             selectedView.wrappedValue = "Preferences"
         }},
-        launchMealPlanner: { withAnimation {
+        onLaunchMealPlanner: { withAnimation {
             selectedView.wrappedValue = "MealPlanner"
         }},
-        myMealsButtonTapped: { withAnimation {
+        onMyMealsButtonTapped: { withAnimation {
             tabViewModel.selectedTab = 1
         }},
-        customBackground: TypeSafeBackground(TestBackground()),
-        customLoading: TypeSafeLoading(MyLoader())
+        background: TypeSafeBackground(TestBackground()),
+        loading: TypeSafeLoading(MyLoader())
     )
 }
 
@@ -58,8 +58,8 @@ struct CatalogView: View {
             params: sharedCatalogNavigation(
                 selectedView: $selectedView,
                 tabViewModel: tabViewModel),
-            catalogPackageRowParams: CatalogPackageRowParams(
-                showRecipes: { withAnimation {
+            catalogPackageRowParams: CatalogPackageRowParameters(
+                onSeeAllRecipes: { withAnimation {
                     selectedView = "CatalogResults"
                 }},
                 onRecipeTapped: { recipeId in
