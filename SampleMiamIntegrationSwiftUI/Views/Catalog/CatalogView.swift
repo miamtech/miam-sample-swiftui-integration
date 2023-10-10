@@ -28,11 +28,13 @@ public func sharedCatalogNavigation(
         onLaunchMealPlanner: { withAnimation {
             selectedView.wrappedValue = "MealPlanner"
         }},
-        onMyMealsButtonTapped: { withAnimation {
+        onMealsInBasketButtonTapped: { withAnimation {
             tabViewModel.selectedTab = 1
         }},
-        background: TypeSafeBackground(TestBackground()),
-        loading: TypeSafeLoading(MyLoader())
+        viewOptions: CatalogParamsViewOptions(
+            loading: TypeSafeLoading(MyLoader()),
+            background: TypeSafeBackground(TestBackground())
+        )
     )
 }
 

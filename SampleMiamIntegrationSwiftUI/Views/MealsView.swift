@@ -27,9 +27,9 @@ struct MealsView: View {
         NavigationView {
             MyMealsViewTemplate(
                 params: DefaultBaseViewParams(),
-                basketRecipesParams: DefaultBasketRecipeParams(
-                    replaceRecipe: { print("replace recipe") },
-                    showRecipeDetails: { recipeId in
+                basketRecipesParams: BasketRecipeParameters(
+                    onReplaceRecipe: { print("replace recipe") },
+                    onShowRecipeDetails: { recipeId in
                         print("showRecipeDetails")
                     }),
                 config: MyMealsBasketViewConfig)
