@@ -25,8 +25,9 @@ struct MealPlannerView: View {
                     onNavigateToBasket: {
                         navigationStack.append(.basketPreview)
                     }),
-            config: MealPlannerRecipesViewConfig(
-                recipesListSpacing: 6.0,
+            gridConfig: MealPlannerRecipesListGridConfig(
+                horizontalSpacing: 6,
+                verticalSpacing: 6, 
                 recipeCardDimensions: CGSize(width: 300, height: 300)))
         
     }

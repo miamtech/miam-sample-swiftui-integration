@@ -1,5 +1,5 @@
 //
-//  MealsView.swift
+//  MyMealsView.swift
 //  iosApp
 //
 //  Created by Vincent Kergonna on 19/07/2022.
@@ -10,29 +10,34 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
-struct MealsView: View {
-    var MyMealsBasketViewConfig = BasketRecipesViewConfig(
-        recipesSpacing: 8.0,
-        productsSpacing: 8.0,
-        recipeOverviewDimensions: CGSize(width: 150, height: 150),
-        isExpandable: true
-    )
+struct MyMealsView: View {
+    var myMealsBasketViewConfig = BasketRecipesGridConfig(
+        recipeHorizontalSpacing: 6.0,
+        recipeVerticalSpacing: 6.0,
+        productHorizontalSpacing: 6.0,
+        productVerticalSpacing: 6.0,
+        recipeOverviewDimensions: CGSize(width: 300, height: 150),
+        isExpandable: true)
     @ObservedObject var groceriesList: Groceries = Groceries()
     //    binding bool to launch Acc settings determined by TabbedView
     @Binding var launchAccount: Bool
     //    decides if button is shown
     var showAccount: Bool
     
+    @EnvironmentObject var tabViewModel: TabViewModel
+    
     var body: some View {
         NavigationView {
             MyMealsViewTemplate(
-                params: DefaultBaseViewParams(),
+                params: MyMealsParameters(onNoResultsRedirect: {
+                    tabViewModel.selectedTab = 3
+                }),
                 basketRecipesParams: BasketRecipeParameters(
                     onReplaceRecipe: { print("replace recipe") },
                     onShowRecipeDetails: { recipeId in
                         print("showRecipeDetails")
                     }),
-                config: MyMealsBasketViewConfig)
+                gridConfig: myMealsBasketViewConfig)
             .navigationTitle("Mes repas (\(groceriesList.numberOfRecipes))").navigationBarTitleDisplayMode(.inline)
             .toolbar(content: {
                 Button {
@@ -50,6 +55,6 @@ struct MealsView: View {
 
 struct MealsView_Previews: PreviewProvider {
     static var previews: some View {
-        MealsView(launchAccount: .constant(false), showAccount: true)
+        MyMealsView(launchAccount: .constant(false), showAccount: true)
     }
 }

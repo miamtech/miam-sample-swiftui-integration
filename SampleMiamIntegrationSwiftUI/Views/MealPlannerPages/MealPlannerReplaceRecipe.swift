@@ -26,11 +26,7 @@ struct MealPlannerReplaceRecipe: View {
                     onOpenFiltersOptions: { _ in
 //                        navigationStack.removeLast()
                 }),
-            config: RecipesListViewConfig(
-                recipesListColumns: 2,
-                recipesListSpacing: 6.0,
-                recipeCardDimensions: CGSize(width: 300, height: 380),
-                recipeCardFillMaxWidth: true)
+            gridConfig: localRecipesListViewConfig
         )
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 import MiamIOSFramework
 import miamCore
+import MiamNeutraliOSFramework
 
 struct SponsorDetailView: View {
     @Binding var selectedSponsor: Sponsor?
@@ -15,7 +16,7 @@ struct SponsorDetailView: View {
     var body: some View {
         if let selectedSponsor {
             SponsorDetailViewTemplate(
-                params: DefaultBaseViewParams(),
+                params: SponsorDetailsParameters(),
                 sponsor: selectedSponsor)
         }
     }

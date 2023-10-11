@@ -18,7 +18,7 @@ struct CatalogTabView: View {
     var showAccount: Bool
     @SwiftUI.State private var selectedRecipe: String = "Catalog"
     @SwiftUI.State private var selectedSponsor: Sponsor? = nil
-    
+    @SwiftUI.State private var selectedFilterViewModel: SingletonFilterViewModel = MiamDI.shared.recipeFilterViewModel
     @SwiftUI.State private var selectedView: String? = nil
     
     struct PageWithHeader<Content: View>: View {
@@ -82,7 +82,10 @@ struct CatalogTabView: View {
                 destination:
                     PageWithHeader(
                         selectedView: $selectedView,
-                        view: FiltersPage(selectedView: $selectedView))
+                        view: FiltersPage(
+                            selectedView: $selectedView,
+                            selectedFilterViewModel: $selectedFilterViewModel
+                        ))
                     .navigationTitle("Filters")
                 , tag: "Filters", selection: $selectedView) { EmptyView() }
             NavigationLink(
@@ -98,7 +101,8 @@ struct CatalogTabView: View {
                         selectedView: $selectedView,
                         view: CatalogResultsView(
                             selectedView: $selectedView,
-                            selectedRecipe: $selectedRecipe))
+                            selectedRecipe: $selectedRecipe,
+                            selectedFilterViewModel: $selectedFilterViewModel))
                     .navigationTitle("CatalogResults")
                 , tag: "CatalogResults", selection: $selectedView) { EmptyView() }
             NavigationLink(
@@ -125,7 +129,9 @@ struct CatalogTabView: View {
                 , tag: "SponsorDetails", selection: $selectedView) { EmptyView() }
             CatalogView(
                 selectedRecipe: $selectedRecipe,
-                selectedView: $selectedView)
+                selectedView: $selectedView,
+                selectedFilterViewModel: $selectedFilterViewModel
+            )
             .navigationTitle(LocalizedStringKey("tab_catalog"))
             .navigationBarTitleDisplayMode(.inline)
         }

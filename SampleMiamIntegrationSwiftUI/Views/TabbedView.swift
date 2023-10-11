@@ -49,7 +49,7 @@ struct TabbedView: View {
                     .tag(0)
             }
             tabRequiresAccount(content: {
-                MealsView(launchAccount: $launchAccountSetting,
+                MyMealsView(launchAccount: $launchAccountSetting,
                           showAccount: decideShowAccountSettings())},
                                label: LocalizedStringKey("tab_meals"),
                                systemImage: "fork.knife.circle").tag(1)
