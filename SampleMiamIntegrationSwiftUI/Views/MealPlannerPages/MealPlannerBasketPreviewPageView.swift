@@ -23,7 +23,7 @@ struct MealPlannerBasketPreviewPageView: View {
                     navigationStack.append(.recapRecipes)
                 }),
             basketRecipesParams: BasketRecipeParameters(
-                onReplaceRecipe: {
+                onReplaceProduct: { recipeId in
                     navigationStack.append(.itemSelector)
                 },
                 onShowRecipeDetails: { recipe in

@@ -20,6 +20,11 @@ struct MealsView: View {
     @ObservedObject var groceriesList: Groceries = Groceries()
     //    binding bool to launch Acc settings determined by TabbedView
     @Binding var launchAccount: Bool
+
+    @State var openItemSelector = false
+    @State var selectedRecipe = ""
+    @State private var navigationStack: [MealPlannerNavigationState] = []
+    
     //    decides if button is shown
     var showAccount: Bool
     
@@ -28,10 +33,14 @@ struct MealsView: View {
             MyMealsViewTemplate(
                 params: DefaultBaseViewParams(),
                 basketRecipesParams: BasketRecipeParameters(
-                    onReplaceRecipe: { print("replace recipe") },
+                    onReplaceProduct: { recipeId in
+                        selectedRecipe = recipeId
+                        openItemSelector = true
+                    },
                     onShowRecipeDetails: { recipeId in
                         print("showRecipeDetails")
-                    }),
+                    }
+                ),
                 config: MyMealsBasketViewConfig)
             .navigationTitle("Mes repas (\(groceriesList.numberOfRecipes))").navigationBarTitleDisplayMode(.inline)
             .toolbar(content: {
@@ -44,7 +53,9 @@ struct MealsView: View {
                     launchAccountSetting: $launchAccount
                 )}
             })
-        }
+        }.sheet(isPresented: $openItemSelector, content: { ItemSelector(
+            params: ItemSelectorParameters(onItemSelected: { openItemSelector = false} ),
+            recipeId: selectedRecipe) })
     }
 }
 

@@ -8,14 +8,16 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
 
 struct ItemSelectorPageView: View {
     @Binding var navigationStack: [MealPlannerNavigationState]
     @Binding var selectedRecipe: String
     var body: some View {
-        ItemSelector(recipeId: selectedRecipe, onItemSelected: {
-                navigationStack.removeLast()
-            })
+        ItemSelector(
+            params: ItemSelectorParameters(onItemSelected: {navigationStack.removeLast()}),
+            recipeId: selectedRecipe
+        )
     }
 }
 
