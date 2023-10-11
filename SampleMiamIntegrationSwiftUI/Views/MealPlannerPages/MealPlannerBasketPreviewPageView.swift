@@ -8,29 +8,34 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
 
 struct MealPlannerBasketPreviewPageView: View {
     @Binding var navigationStack: [MealPlannerNavigationState]
     @Binding var selectedRecipe: String
     var body: some View {
-        MealPlannerBasketPreviewView(
-            loadingTemplate: MiamMealPlannerBasketPreviewLoading(),
-            recipeOverviewTemplate: MiamMealPlannerBasketPreviewRecipeOverview(),
-            recipeLoadingTemplate: MiamMealPlannerRecipeCardLoading(),
-            productTemplate: MiamMealPlannerBasketPreviewProduct(),
-            footerTemplate: MiamMealPlannerBasketPreviewFooter(),
-            sectionTitleTemplate: MiamMealPlannerBasketPreviewSectionTitle(),
-            sectionProductTemplate: MiamMealPlannerBasketPreviewSectionProduct()) {
-                navigationStack.append(.itemSelector)
-        } continueShopping: {
-            navigationStack.append(.recapRecipes)
-        } showBasket: {
-//            navigationStack.append(.showBasket)
-        } onRecipeTapped: { recipe in
-            selectedRecipe = recipe
-            navigationStack.append(.recipeDetails)
-        }
-
+        MealPlannerBasketView(
+            params: MealPlannerBasketParameters(
+                onNavigateToRecap: {
+                    navigationStack.append(.recapRecipes)
+                },
+                onNavigateToBasket: {
+                    navigationStack.append(.recapRecipes)
+                }),
+            basketRecipesParams: BasketRecipeParameters(
+                onReplaceRecipe: {
+                    navigationStack.append(.itemSelector)
+                },
+                onShowRecipeDetails: { recipe in
+                    selectedRecipe = recipe
+                    navigationStack.append(.recipeDetails)
+                }),
+            config: BasketRecipesViewConfig(
+                recipesSpacing: 6.0,
+                productsSpacing: 6.0,
+                recipeOverviewDimensions: CGSize(width: 300, height: 150),
+                isExpandable: true)
+        )
     }
 }
 

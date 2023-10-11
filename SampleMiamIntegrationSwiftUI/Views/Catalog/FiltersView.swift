@@ -7,43 +7,31 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
+import miamCore
 
-/// This sets the Templates for the PreferencesSearchView Overview
-public class FiltersParameters: CatalogFilterViewParameters {
-    public var applyFilters: () -> Void
-    public var closeFilters: () -> Void
-    public init(
-        applyFilters: @escaping () -> Void,
-        closeFilters: @escaping () -> Void
-    ) {
-        self.applyFilters = applyFilters
-        self.closeFilters = closeFilters
-    }
-}
-
-struct FiltersView: View {
-    @Binding var navigationStack: [CatalogNavigationState]
+struct FiltersPage: View {
+    @Binding var selectedView: String?
     var body: some View {
-        CatalogFilterViewTemplate(params: FiltersParameters(
-            applyFilters: {
-                withAnimation {
-                    navigationStack.removeLast()
-                    navigationStack.append(.catalogResults)
-                }
-            }, closeFilters: {
-                withAnimation {
-                    navigationStack.removeLast()
-                    return
-                }
-            })
-        )
+        FiltersView(params: FiltersParameters(
+            onApplied: {
+                withAnimation { selectedView = "CatalogResults" }
+            }, onClosed: {
+                withAnimation { selectedView = nil }
+            },
+            viewOptions: FiltersParamsViewOptions(
+                callToAction: TypeSafeFiltersCTA(MiamNeutralFiltersCTA()),
+                background: TypeSafeBackground(TestBackground())
+            )
+        ), singletonFilterViewModel: MiamDI.shared.recipeFilterViewModel)
     }
 }
 
-struct FiltersView_Previews: PreviewProvider {
+
+struct FiltersPage_Previews: PreviewProvider {
     static var previews: some View {
-        FiltersView(
-            navigationStack: .constant([.catalog])
+        FiltersPage(
+            selectedView: .constant(nil)
         )
     }
 }

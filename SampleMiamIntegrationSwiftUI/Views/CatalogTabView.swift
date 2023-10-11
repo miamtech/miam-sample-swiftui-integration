@@ -11,112 +11,123 @@ import MiamIOSFramework
 import MiamNeutraliOSFramework
 import miamCore
 
-enum CatalogNavigationState  {
-    case catalog
-    case mealPlanner
-    case preferences
-    case preferencesSearch
-    case catalogSearch
-    case filters
-    case catalogResults
-    case recipeDetails
-    case sponsorDetails
-}
-
 struct CatalogTabView: View {
     // binding bool to launch Acc settings determined by TabbedView
     @Binding var launchAccount: Bool
     // decides if button is shown
     var showAccount: Bool
-    @SwiftUI.State private var selectedRecipe: String = ""
+    @SwiftUI.State private var selectedRecipe: String = "Catalog"
     @SwiftUI.State private var selectedSponsor: Sponsor? = nil
     
-    @SwiftUI.State private var navigationStack: [CatalogNavigationState] = []
+    @SwiftUI.State private var selectedView: String? = nil
     
     struct PageWithHeader<Content: View>: View {
         private let view: Content
-        @Binding var navigationStack: [CatalogNavigationState]
-        init(navigationStack: Binding<[CatalogNavigationState]>, view: Content) {
+        @Binding var selectedView: String?
+        
+        init(
+             selectedView: Binding<String?>,
+             view: Content) {
             self.view = view
-            _navigationStack = navigationStack
+            _selectedView = selectedView
         }
         var body: some View {
             view
                 .navigationBarItems(leading: Button(action: {
-                    navigationStack.removeLast()
+                    selectedView = nil
                 }) {
                     Text("Back")
                 }.foregroundColor(Color.white))
+                .navigationBarBackButtonHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
-                .transition(.moveAndFade)
         }
     }
 
     var body: some View {
-        NavigationView {
-            VStack {
-                switch navigationStack.last {
-                case .mealPlanner:
-                    MealPlanner(parentNavigationStack: $navigationStack)
-                        .transition(.moveAndFade)
-                        .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle("Meal Planner")
-                case .preferences:
+//        if #available(iOS 16, *) {
+//            NavigationStack {
+//                navContent()
+//            }
+//        } else {
+            NavigationView {
+                navContent()
+            }
+//        }
+    }
+    
+    func navContent() -> some View {
+        return VStack {
+            NavigationLink(
+                destination:
+                    MealPlanner(selectedView: $selectedView)
+                    .transition(.moveAndFade)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Meal Planner")
+                , tag: "MealPlanner", selection: $selectedView) { EmptyView() }
+            NavigationLink(
+                destination:
                     PageWithHeader(
-                        navigationStack: $navigationStack,
-                        view: PreferencesView(navigationStack: $navigationStack))
+                        selectedView: $selectedView,
+                        view: PreferencesView(selectedView: $selectedView))
                     .navigationTitle("Preferences")
-                case .preferencesSearch:
+                , tag: "Preferences", selection: $selectedView) { EmptyView() }
+            NavigationLink(
+                destination:
                     PageWithHeader(
-                        navigationStack: $navigationStack,
-                        view: PreferencesSearchView(navigationStack: $navigationStack))
-                    .navigationTitle("Preferences Search")
-                case .catalogSearch:
+                        selectedView: $selectedView,
+                        view: PreferencesSearchView(selectedView: $selectedView))
+                    .navigationTitle("PreferencesSearch")
+                , tag: "PreferencesSearch", selection: $selectedView) { EmptyView() }
+            NavigationLink(
+                destination:
                     PageWithHeader(
-                        navigationStack: $navigationStack,
-                        view: CatalogSearchView(navigationStack: $navigationStack))
-                    .navigationTitle("Search")
-                case .filters:
-                    PageWithHeader(
-                        navigationStack: $navigationStack,
-                        view: FiltersView(navigationStack: $navigationStack))
+                        selectedView: $selectedView,
+                        view: FiltersPage(selectedView: $selectedView))
                     .navigationTitle("Filters")
-                case .catalogResults:
+                , tag: "Filters", selection: $selectedView) { EmptyView() }
+            NavigationLink(
+                destination:
                     PageWithHeader(
-                        navigationStack: $navigationStack,
+                        selectedView: $selectedView,
+                        view: CatalogSearchView(selectedView: $selectedView))
+                    .navigationTitle("CatalogSearch")
+                , tag: "CatalogSearch", selection: $selectedView) { EmptyView() }
+            NavigationLink(
+                destination:
+                    PageWithHeader(
+                        selectedView: $selectedView,
                         view: CatalogResultsView(
-                            navigationStack: $navigationStack,
+                            selectedView: $selectedView,
                             selectedRecipe: $selectedRecipe))
-                    .navigationTitle("Results")
-                case .recipeDetails:
-                    PageWithHeader(
-                        navigationStack: $navigationStack,
-                        view: RecipeDetailsView(
-                            popRecipeDetails: { withAnimation {
-                                navigationStack.removeLast()
-                                return
-                            }},
-                            launchSponsorDetails: { withAnimation {
-                                navigationStack.append(.sponsorDetails)
-                            }},
-                            selectedRecipe: $selectedRecipe,
-                            selectedSponsor: $selectedSponsor))
+                    .navigationTitle("CatalogResults")
+                , tag: "CatalogResults", selection: $selectedView) { EmptyView() }
+            NavigationLink(
+                destination:
+                    RecipeDetailsView(
+                        popRecipeDetails: { withAnimation {
+                            selectedView = nil
+                            return
+                        }},
+                        launchSponsorDetails: { withAnimation {
+                            selectedView = "SponsorDetails"
+                        }},
+                        selectedRecipe: $selectedRecipe,
+                        selectedSponsor: $selectedSponsor)
                     .navigationTitle("Recipe Details")
-                case .sponsorDetails:
+                , tag: "RecipeDetails", selection: $selectedView) { EmptyView() }
+            NavigationLink(
+                destination:
                     PageWithHeader(
-                        navigationStack: $navigationStack,
+                        selectedView: $selectedView,
                         view: SponsorDetailView(
                             selectedSponsor: $selectedSponsor))
-                    .navigationTitle("Recipe Details")
-                default:
-                    CatalogView(
-                        navigationStack: $navigationStack,
-                        selectedRecipe: $selectedRecipe)
-                    .navigationTitle(LocalizedStringKey("tab_catalog"))
-                    .navigationBarTitleDisplayMode(.inline)
-                    .transition(.moveAndFade)
-                }
-            }
+                    .navigationTitle("SponsorDetails")
+                , tag: "SponsorDetails", selection: $selectedView) { EmptyView() }
+            CatalogView(
+                selectedRecipe: $selectedRecipe,
+                selectedView: $selectedView)
+            .navigationTitle(LocalizedStringKey("tab_catalog"))
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

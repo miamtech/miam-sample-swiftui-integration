@@ -8,12 +8,12 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
 
 struct MealPlannerRecapPageView: View {
     var body: some View {
         MealPlannerRecapView(
-            template: MiamMealPlannerRecap(),
-            onTapGesture: {})
+            params: MealPlannerRecapParameters(onNavigateAwayFromMealPlanner: {}))
     }
 }
 

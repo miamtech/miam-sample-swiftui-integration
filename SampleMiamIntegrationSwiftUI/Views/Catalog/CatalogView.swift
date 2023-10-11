@@ -8,50 +8,45 @@ import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
 
-/// This sets the Templates for the CatalogPage Overview
-public struct CatalogViewParams: CatalogViewParameters {
-    public var filtersTapped: () -> Void
-    public var searchTapped: () -> Void
-    public var favoritesTapped: () -> Void
-    public var preferencesTapped: () -> Void
-    public var launchMealPlanner: (() -> Void)?
-    public var myMealsButtonTapped: () -> Void
-    public init(
-        filtersTapped: @escaping () -> Void,
-        searchTapped: @escaping () -> Void,
-        favoritesTapped: @escaping () -> Void,
-        preferencesTapped: @escaping () -> Void,
-        launchMealPlanner: (() -> Void)? = nil,
-        myMealsButtonTapped: @escaping () -> Void
-    ) {
-        self.filtersTapped = filtersTapped
-        self.searchTapped = searchTapped
-        self.favoritesTapped = favoritesTapped
-        self.preferencesTapped = preferencesTapped
-        self.launchMealPlanner = launchMealPlanner
-        self.myMealsButtonTapped = myMealsButtonTapped
-    }
-    
-    // if you WANT the meal Planner:
-    public var mealPlannerCTA = MiamNeutralMealPlannerCallToAction() // your CTA
+public func sharedCatalogNavigation(
+    selectedView: Binding<String?>,
+    tabViewModel: TabViewModel
+) ->  CatalogParameters {
+    return CatalogParameters(
+        onFiltersTapped: { withAnimation {
+            selectedView.wrappedValue = "Filters"
+        }},
+        onSearchTapped: { withAnimation {
+            selectedView.wrappedValue = "CatalogSearch"
+        }},
+        onFavoritesTapped: { withAnimation {
+            selectedView.wrappedValue = "CatalogResults"
+        }},
+        onPreferencesTapped: { withAnimation {
+            selectedView.wrappedValue = "Preferences"
+        }},
+        onLaunchMealPlanner: { withAnimation {
+            selectedView.wrappedValue = "MealPlanner"
+        }},
+        onMealsInBasketButtonTapped: { withAnimation {
+            tabViewModel.selectedTab = 1
+        }},
+        viewOptions: CatalogParamsViewOptions(
+            loading: TypeSafeLoading(MyLoader()),
+            background: TypeSafeBackground(TestBackground())
+        )
+    )
 }
 
-/// This sets the Templates for the CatalogRecipesList Overview
-public class MiamNeutralCatalogPackageRowParams: CatalogPackageRowParameters {
-    public var showRecipes: () -> Void
-    public var onRecipeTapped: (String) -> Void
-    public init(
-        showRecipes: @escaping () -> Void,
-        onRecipeTapped: @escaping (String) -> Void
-    ) {
-        self.showRecipes = showRecipes
-        self.onRecipeTapped = onRecipeTapped
+public class MyLoader: LoadingProtocol {
+    public func content() -> some View {
+        Text("i am loading slow!")
     }
 }
 
 struct CatalogView: View {
-    @Binding var navigationStack: [CatalogNavigationState]
     @Binding var selectedRecipe: String
+    @Binding var selectedView: String?
     @EnvironmentObject var tabViewModel: TabViewModel
     var MiamRecipesListViewConfig = RecipesListViewConfig(
         recipesListColumns: 2,
@@ -62,33 +57,17 @@ struct CatalogView: View {
     
     var body: some View {
         CatalogViewTemplate(
-            params: CatalogViewParams(
-                filtersTapped: { withAnimation {
-                    navigationStack.append(.filters)
-                }},
-                searchTapped: { withAnimation {
-                    navigationStack.append(.catalogSearch)
-                }},
-                favoritesTapped: { withAnimation {
-                    navigationStack.append(.catalogResults)
-                }},
-                preferencesTapped: { withAnimation {
-                    navigationStack.append(.preferences)
-                }},
-                launchMealPlanner: { withAnimation {
-                    navigationStack.append(.mealPlanner)
-                }},
-                myMealsButtonTapped: { withAnimation {
-                    tabViewModel.selectedTab = 1
-                }}),
-            catalogPackageRowParams: MiamNeutralCatalogPackageRowParams(
-                showRecipes: { withAnimation {
-                    navigationStack.append(.catalogResults)
+            params: sharedCatalogNavigation(
+                selectedView: $selectedView,
+                tabViewModel: tabViewModel),
+            catalogPackageRowParams: CatalogPackageRowParameters(
+                onSeeAllRecipes: { withAnimation {
+                    selectedView = "CatalogResults"
                 }},
                 onRecipeTapped: { recipeId in
                     withAnimation {
                         selectedRecipe = recipeId
-                        navigationStack.append(.recipeDetails)
+                        selectedView = "RecipeDetails"
                     }
                 }),
             config: MiamRecipesListViewConfig)

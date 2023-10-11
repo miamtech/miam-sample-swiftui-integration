@@ -7,24 +7,14 @@
 
 import SwiftUI
 import MiamIOSFramework
-
-/// This sets the Templates for the PreferencesSearchView Overview
-public class PreferencesSearchParameters: PreferencesSearchViewParameters {
-    public var closeSearch: () -> Void
-    public init(
-        closeSearch: @escaping () -> Void
-    ) {
-        self.closeSearch = closeSearch
-    }
-}
+import MiamNeutraliOSFramework
 
 struct PreferencesSearchView: View {
-    @Binding var navigationStack: [CatalogNavigationState]
+    @Binding var selectedView: String?
     var body: some View {
         PreferencesSearchViewTemplate(params: PreferencesSearchParameters(
-            closeSearch: { withAnimation {
-                navigationStack.removeLast()
-                return
+            onClosed: { withAnimation {
+                selectedView = nil
             }}))
     }
 }
@@ -32,7 +22,7 @@ struct PreferencesSearchView: View {
 struct PreferencesSearchView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesSearchView(
-            navigationStack: .constant([.catalog])
+            selectedView: .constant(nil)
         )
     }
 }

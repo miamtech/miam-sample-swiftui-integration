@@ -8,25 +8,27 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
 
 struct MealPlannerView: View {
     @Binding var navigationStack: [MealPlannerNavigationState]
     var body: some View {
-        MealPlannerPlannerView(
-            toolbarTemplate: MiamBudgetPlannerToolbar(),
-            footerTemplate: MiamBudgetPlannerStickyFooter(),
-            loadingTemplate: MiamBudgetPlannerLoading(),
-            emptyTemplate: MiamBudgetPlannerEmpty(),
-            recipeCardTemplate: MiamMealPlannerRecipeCard(),
-            loadingCardTemplate: MiamMealPlannerRecipeCardLoading(),
-            placeholderCardTemplate: MiamMealPlannerRecipePlaceholder()
-        ) { _ in
-            navigationStack.append(.recipeDetails)
-        } validateRecipes: {
-            navigationStack.append(.basketPreview)
-        } replaceRecipe: { _ in
-            navigationStack.append(.replaceRecipe)
-        }
+        MealPlannerResultsViewTemplate(
+            params:
+                MealPlannerResultsParameters(
+                    onShowRecipeDetails: { _ in
+                        navigationStack.append(.recipeDetails)
+                    },
+                    onOpenReplaceRecipe: { _ in
+                        navigationStack.append(.replaceRecipe)
+                    },
+                    onNavigateToBasket: {
+                        navigationStack.append(.basketPreview)
+                    }),
+            config: MealPlannerRecipesViewConfig(
+                recipesListSpacing: 6.0,
+                recipeCardDimensions: CGSize(width: 300, height: 300)))
+        
     }
 }
 

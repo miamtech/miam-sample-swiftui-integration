@@ -9,18 +9,7 @@
 import SwiftUI
 import MiamIOSFramework
 import miamCore
-
-class RecipeDetailsParams: RecipeDetailsViewParameters {
-    public var closeRecipeDetails: () -> Void
-    public var sponsorDetailsTapped: (Sponsor) -> Void
-    public init(
-        closeRecipeDetails: @escaping () -> Void,
-        sponsorDetailsTapped: @escaping (Sponsor) -> Void
-    ) {
-        self.closeRecipeDetails = closeRecipeDetails
-        self.sponsorDetailsTapped = sponsorDetailsTapped
-    }
-}
+import MiamNeutraliOSFramework
 
 struct RecipeDetailsView: View {
     var popRecipeDetails: () -> Void
@@ -29,9 +18,9 @@ struct RecipeDetailsView: View {
     @Binding var selectedSponsor: Sponsor?
     
     var body: some View {
-        RecipeDetails(params: RecipeDetailsParams(
-            closeRecipeDetails: popRecipeDetails,
-            sponsorDetailsTapped: { sponsor in
+        RecipeDetails(params: RecipeDetailParameters(
+            onClosed: popRecipeDetails,
+            onSponsorDetailsTapped: { sponsor in
                 selectedSponsor = sponsor
                 launchSponsorDetails()
             }), recipeId: selectedRecipe)

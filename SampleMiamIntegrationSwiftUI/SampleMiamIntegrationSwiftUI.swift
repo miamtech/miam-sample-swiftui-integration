@@ -1,7 +1,7 @@
 import SwiftUI
 import miamCore
 
-class TabViewModel: ObservableObject {
+public class TabViewModel: ObservableObject {
     @Published var selectedTab: Int = 0
 }
 
