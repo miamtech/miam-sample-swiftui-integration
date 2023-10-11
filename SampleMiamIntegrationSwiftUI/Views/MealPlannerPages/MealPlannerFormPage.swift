@@ -8,15 +8,18 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
 
 struct MealPlannerFormPage: View {
     @Binding var navigationStack: [MealPlannerNavigationState]
     @Binding var recipes: [String]?
     var body: some View {
-        MealPlannerFormView(budgetForm: MiamBudgetForm(), budgetInfos: nil) { recipes in
-            self.recipes = recipes
-            withAnimation { navigationStack.append(.mealPlanner) }
-        }
+        MealPlannerFormPageViewTemplate(
+            params: MealPlannerFormParameters(
+                onNavigateToMealPlannerResults: { recipes in
+                    self.recipes = recipes
+                    withAnimation { navigationStack.append(.mealPlanner) }
+                }))
     }
 }
 

@@ -8,18 +8,30 @@
 
 import SwiftUI
 import MiamIOSFramework
+import MiamNeutraliOSFramework
 
 struct MealPlannerReplaceRecipe: View {
     @Binding var navigationStack: [MealPlannerNavigationState]
     @Binding var selectedRecipe: String
     var body: some View {
         MealPlannerRecipePickerView(
-            searchTemplate: MiamBudgetSearch(),
-            cardTemplate: MiamRecipeCard()) { _ in
-                navigationStack.removeLast()
-        } onRecipeTapped: {_ in
-            navigationStack.append(.recipeDetails)
-        }
+            params:
+                MealPlannerRecipePickerParameters(
+                    onShowRecipeDetails: {_ in
+                        navigationStack.append(.recipeDetails)
+                    },
+                    onSelectRecipeForMealPlanner: { _ in
+                        navigationStack.removeLast()
+                },
+                    onOpenFiltersOptions: { _ in
+//                        navigationStack.removeLast()
+                }),
+            config: RecipesListViewConfig(
+                recipesListColumns: 2,
+                recipesListSpacing: 6.0,
+                recipeCardDimensions: CGSize(width: 300, height: 380),
+                recipeCardFillMaxWidth: true)
+        )
     }
 }
 
