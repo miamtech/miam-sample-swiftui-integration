@@ -30,9 +30,11 @@ struct MealPlannerBasketPreviewPageView: View {
                     selectedRecipe = recipe
                     navigationStack.append(.recipeDetails)
                 }),
-            config: BasketRecipesViewConfig(
-                recipesSpacing: 6.0,
-                productsSpacing: 6.0,
+            gridConfig: BasketRecipesGridConfig(
+                recipeHorizontalSpacing: 6.0,
+                recipeVerticalSpacing: 6.0,
+                productHorizontalSpacing: 6.0,
+                productVerticalSpacing: 6.0,
                 recipeOverviewDimensions: CGSize(width: 300, height: 150),
                 isExpandable: true)
         )

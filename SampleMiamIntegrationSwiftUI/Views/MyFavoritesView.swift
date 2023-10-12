@@ -24,12 +24,6 @@ public struct TestBackground: BackgroundProtocol {
 }
 
 struct MyFavoritesView: View {
-    var FavoritesPageRecipesListViewConfig = RecipesListViewConfig(
-        recipesListColumns: 2,
-        recipesListSpacing: 8,
-        recipeCardDimensions: CGSize(width: 300, height: 380),
-        recipeCardFillMaxWidth: true
-    )
     //    binding bool to launch Acc settings determined by TabbedView
     @Binding var launchAccount: Bool
     //    decides if button is shown
@@ -38,17 +32,14 @@ struct MyFavoritesView: View {
     var body: some View {
         NavigationView {
             FavoritesViewTemplate(
-                params: FavoritesParams(
-                    showRecipes: { catalog in
-                        print("launch catalog")
-                    },
-                    noResultsRedirect: {
+                params: FavoritesParameters(
+                    onNoResultsRedirect: {
                         tabViewModel.selectedTab = 3
                     },
-                    onRecipeTapped: { recipeId in
+                    onShowRecipeDetails: { recipeId in
                         print("launch recipeDetails")
                     }),
-                config: FavoritesPageRecipesListViewConfig)
+                gridConfig: localRecipesListViewConfig)
             .navigationTitle(LocalizedStringKey("tab_favorites")).navigationBarTitleDisplayMode(.inline)
                 .toolbar(content: {
                     if showAccount { ShowAccountDependingOnStore(launchAccountSetting: $launchAccount)}

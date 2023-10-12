@@ -12,6 +12,7 @@ import miamCore
 
 struct FiltersPage: View {
     @Binding var selectedView: String?
+    @Binding var selectedFilterViewModel: SingletonFilterViewModel
     var body: some View {
         FiltersView(params: FiltersParameters(
             onApplied: {
@@ -23,7 +24,7 @@ struct FiltersPage: View {
                 callToAction: TypeSafeFiltersCTA(MiamNeutralFiltersCTA()),
                 background: TypeSafeBackground(TestBackground())
             )
-        ), singletonFilterViewModel: MiamDI.shared.recipeFilterViewModel)
+        ), singletonFilterViewModel: selectedFilterViewModel)
     }
 }
 
@@ -31,7 +32,8 @@ struct FiltersPage: View {
 struct FiltersPage_Previews: PreviewProvider {
     static var previews: some View {
         FiltersPage(
-            selectedView: .constant(nil)
+            selectedView: .constant(nil),
+            selectedFilterViewModel: .constant(MiamDI.shared.recipeFilterViewModel)
         )
     }
 }

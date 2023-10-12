@@ -7,13 +7,16 @@
 import SwiftUI
 import MiamIOSFramework
 import MiamNeutraliOSFramework
+import miamCore
 
 public func sharedCatalogNavigation(
     selectedView: Binding<String?>,
+    selectedFilterViewModel: Binding<SingletonFilterViewModel>,
     tabViewModel: TabViewModel
 ) ->  CatalogParameters {
     return CatalogParameters(
-        onFiltersTapped: { withAnimation {
+        onFiltersTapped: { singletonFilter in withAnimation {
+            selectedFilterViewModel.wrappedValue = singletonFilter
             selectedView.wrappedValue = "Filters"
         }},
         onSearchTapped: { withAnimation {
@@ -47,18 +50,14 @@ public class MyLoader: LoadingProtocol {
 struct CatalogView: View {
     @Binding var selectedRecipe: String
     @Binding var selectedView: String?
+    @Binding var selectedFilterViewModel: SingletonFilterViewModel
     @EnvironmentObject var tabViewModel: TabViewModel
-    var MiamRecipesListViewConfig = RecipesListViewConfig(
-        recipesListColumns: 2,
-        recipesListSpacing: 8,
-        recipeCardDimensions: CGSize(width: 300, height: 380),
-        recipeCardFillMaxWidth: true
-    )
     
     var body: some View {
         CatalogViewTemplate(
             params: sharedCatalogNavigation(
                 selectedView: $selectedView,
+                selectedFilterViewModel: $selectedFilterViewModel,
                 tabViewModel: tabViewModel),
             catalogPackageRowParams: CatalogPackageRowParameters(
                 onSeeAllRecipes: { withAnimation {
@@ -70,6 +69,6 @@ struct CatalogView: View {
                         selectedView = "RecipeDetails"
                     }
                 }),
-            config: MiamRecipesListViewConfig)
+            gridConfig: localRecipesListViewConfig)
     }
 }
